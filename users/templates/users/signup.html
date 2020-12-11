@@ -1,0 +1,43 @@
+<style>
+    #camera{
+        width: 350;
+        height: 350;
+        border: 1px solid black;
+    }
+</style>
+
+{% load static %}
+<link rel="stylesheet" href="{% static 'signup.css' %}">
+회원가입 페이지<br>
+<img src="{% static '1.jpg' %}" id="mainimg" alt=""><br>
+
+<div id="camera"></div>
+    <button onclick="take_snapshot()">Take Snapshot</button>
+<div id="results"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.js"></script>
+<script>
+    // Load all webcam
+    Webcam.set({
+        width: 350,
+        height: 350,
+        image_format: 'jpeg',
+        jpeg_quality: 90
+    })
+    Webcam.attach("#camera")
+    
+    function take_snapshot(){
+        Webcam.snap(function(data_uri){
+            // display results in page
+            document.getElementById('results').innerHTML = '<img src="' + data_uri + '"/>';
+            document.getElementById('profile_img').value = data_uri;
+        })
+    }
+</script>
+
+<form action="" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    * 표시 항목은 필수 작성<br>
+    {{ form.as_p }}
+    <input name="profile_img" id="profile_img" type="hidden" value="">
+    <input type="submit" value="회원가입">
+</form>
