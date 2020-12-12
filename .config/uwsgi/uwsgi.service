@@ -3,7 +3,7 @@ Description=uWSGI service
 After=syslog.target
 
 [Service]
-ExecStart=/home/ubuntu/myvenv/bin/uwsgi -i /srv/AI_Fit_Test/.config/uwsgi/mylogin.ini
+ExecStart=/home/ubuntu/myvenv/bin/uwsgi -i /srv/AI_Fit/.config/uwsgi/mylogin.ini
 
 Restart=always
 KillSignal=SIGQUIT
