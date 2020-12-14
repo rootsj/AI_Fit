@@ -53,10 +53,6 @@
         nextBtn.addEventListener("click", function (e) {
             changeVideo(false);
         });
-
-        startBtn.addEventListener("click", function (e) {
-            alert("시작");
-        });
         
         selectBox.addEventListener('change', function (e) {
             switch (e.target.value) {
@@ -69,6 +65,11 @@
                     dumbellCurlVideo.style.display = "";
                     break;
             }
+        });
+
+        startBtn.addEventListener("click", function (e) {
+            let what_kind = selectBox.options[selectBox.selectedIndex].value;
+            location.href = "{% url 'users:sports' what_kind='temp' %}".replace(/temp/, what_kind.toString());
         });
     })
 </script>

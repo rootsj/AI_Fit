@@ -52,4 +52,8 @@ def signup_view(request):
         form = SignupForm()
 
     return render(request, "users/signup.html", {'form': form})
+
+# 추가
+def sports_view(request, what_kind):
+    return render(request, "users/sports.html", {'what_kind': what_kind})
     
