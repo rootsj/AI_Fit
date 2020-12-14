@@ -14,13 +14,13 @@
 <label for="workouts">운동 종목 선택: </label>
 <select id="workouts">
     <option value="squat">스쿼트</option>
-    <option value="dumbellcurl">덤벨컬</option>
+    <option value="dumbell_curl">덤벨컬</option>
 </select>
 <br>
 
 <!-- 동영상 -->
-<video src="{% static 'squat.mp4' %}" width="600" height="400" controls id="squatVideo"></video><br>
-<video src="{% static 'dumbell_curl.mp4' %}" width="600" height="400" controls id="dumbellCurlVideo" style="display: none;"></video><br>
+<video src="{% static 'video/squat.mp4' %}" width="600" height="400" controls id="squatVideo"></video><br>
+<video src="{% static 'video/dumbell_curl.mp4' %}" width="600" height="400" controls id="dumbellCurlVideo" style="display: none;"></video><br>
 
 <!-- Prev Start Next Button -->
 <button type="button" id="prev">Prev</button>
@@ -60,7 +60,7 @@
                     squatVideo.style.display = "";
                     dumbellCurlVideo.style.display = "none";
                     break;
-                case "dumbellcurl":
+                case "dumbell_curl":
                     squatVideo.style.display = "none";
                     dumbellCurlVideo.style.display = "";
                     break;
@@ -123,7 +123,7 @@
 
 {% else %}
 
-<img src="{% static '2.jpg' %}" alt=""><br>
+<img src="{% static 'image/2.jpg' %}" alt=""><br>
 <form action="" method="POST">
     {% csrf_token %}
     {{ form.as_p }}
