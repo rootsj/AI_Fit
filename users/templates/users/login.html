@@ -76,18 +76,85 @@
 
 <!-- 그래프 처리 -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
-<div style="height: 300px; width: 400px;">
+<div style="height: 400px; width: 600px;">
     <canvas id="myChart" width="100" height="100"></canvas>
 </div>
 <script>
+    let workout_date_temp = [];
+    let workout_count_temp = [];
+    {% for record in latest_records %}
+        workout_date_temp.push("{{record.workout_date}}");
+        workout_count_temp.push("{{record.workout_count}}");
+    {% endfor %}
+
+    
+    function getDatesOfMonth(year, month) {
+        let datesOfMonth;
+        if (month == 0) {
+            datesOfMonth = new Date(year - 1, 12, 0).getDate();
+        } else {
+            datesOfMonth = new Date(year, month, 0).getDate();
+        }
+        return datesOfMonth;
+    }
+    
+    let workout_date = [];
+    let workout_count = [];
+
+    let mode = 1;
+    let howMuch = 30;
+
+    if (mode == 0) {
+        for (let i = 0; i < howMuch && i < workout_date_temp.length; i++) {
+            workout_date.push(workout_date_temp[i]);
+            workout_count.push(workout_count_temp[i]);
+        }
+    } else {
+        let today = new Date();
+        let year = today.getFullYear();
+        let month = today.getMonth() + 1; //+1을 해줘야 현재 몇월인지가 구해진다.
+        let date = today.getDate();
+        for (let i = 0, j = 0; i < howMuch && j < workout_date_temp.length; i++) {
+            let day = workout_date_temp.length == 0 ? -1 : workout_date_temp[j].split(' ')[2].slice(0, -1);
+            if (date == day) {
+                workout_date.push(workout_date_temp[j]);
+                workout_count.push(workout_count_temp[j]);
+                j++;
+            } else {
+                workout_date.push(year + "년 " + month + "월 " + date + "일");
+                workout_count.push(0);
+            }
+    
+            if (date == 1) {
+                month--;
+                date = getDatesOfMonth(year, month);
+                if (month == 0) {
+                    year--;
+                    month = 12;
+                }
+            } else {
+                date--;
+            }
+        }
+    }
+
+    workout_date.reverse();
+    workout_count.reverse();
+
+    console.log("test");
+    console.log(workout_date_temp);
+    console.log(workout_count_temp);
+    console.log("{{ latest_records }}");
+    alert('stop');
+
     var ctx = document.getElementById('myChart').getContext('2d');
     var myChart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: ['30', '31', '1', '2', '3', '4', '5'],
+            labels: workout_date,
             datasets: [{
                 label: '운동 횟수',
-                data: [12, 19, 3, 5, 2, 3, 8],
+                data: workout_count,
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
                     'rgba(54, 162, 235, 0.2)',

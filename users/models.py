@@ -65,3 +65,9 @@ class User(AbstractBaseUser):
     def is_staff(self):
         return self.is_admin
         
+
+class DailyRecord(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    what_kind = models.CharField(max_length=50)
+    workout_date = models.DateField('workout date')
+    workout_count = models.IntegerField(default=0)

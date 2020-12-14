@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from .forms import LoginForm, SignupForm
-from .models import User
+from .models import User, DailyRecord
 
 import base64
 from django.core.files.base import ContentFile
@@ -17,6 +17,10 @@ def login_view(request):
 
             if user is not None:
                 login(request, user)
+
+                latest_records = DailyRecord.objects.filter(user=user.id).order_by('-workout_date')[:30]
+
+                return render(request, "users/login.html", {'latest_records': latest_records})
 
     else:
         form = LoginForm()
