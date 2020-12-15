@@ -64,10 +64,7 @@
 
         startBtn.addEventListener("click", function (e) {
             let what_kind = selectBox.options[selectBox.selectedIndex].value;
-            //장고 템플릿에 일반적인 방법으로 자바스크립트 변수를 반영하는 것은 불가능하다.
-            //구글링을 해보니 아래와 같이 특수한 방법으로 트릭을 줘서 해결할 수 있다는데,
-            //정확한 원리는 잘 모르겠지만 대략 템플릿 구문이 해석되기 이전에 바꿔치기를 하여 해결하는 방식인 것 같다.
-            location.href = "{% url 'users:sports' what_kind='temp' %}".replace(/temp/, what_kind.toString());
+            location.href = "/auth/sports/" + what_kind;
         });
     })
 </script>
