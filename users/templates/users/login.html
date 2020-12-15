@@ -10,22 +10,15 @@
 <a href="{% url 'users:logout' %}">로그아웃</a>
 <br><br>
 
-<!-- DropBox Button -->
-<label for="workouts">운동 종목 선택: </label>
-<select id="workouts">
-    <option value="squat">스쿼트</option>
-    <option value="dumbell_curl">덤벨컬</option>
-</select>
-<br>
-
 <!-- 동영상 -->
-<video src="{% static 'video/squat.mp4' %}" width="600" height="400" controls id="squatVideo"></video><br>
+<video src="{% static 'video/squat.mp4' %}" width="600" height="400" controls id="squatVideo"></video>
 <video src="{% static 'video/dumbell_curl.mp4' %}" width="600" height="400" controls id="dumbellCurlVideo" style="display: none;"></video><br>
 
 <!-- Prev Start Next Button -->
 <button type="button" id="prev">Prev</button>
 <button type="button" id="start">Start</button>
 <button type="button" id="next">Next</button>
+<br><br>
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -43,7 +36,7 @@
                 selectBox.selectedIndex = prev ? selectBox.options.length - 1 : 0;
             }
 
-            selectBox.dispatchEvent(new Event('change'));
+            selectBox.dispatchEvent(new Event("change"));
         }
 
         prevBtn.addEventListener("click", function (e) {
@@ -54,7 +47,7 @@
             changeVideo(false);
         });
         
-        selectBox.addEventListener('change', function (e) {
+        selectBox.addEventListener("change", function (e) {
             switch (e.target.value) {
                 case "squat":
                     squatVideo.style.display = "";
@@ -65,57 +58,86 @@
                     dumbellCurlVideo.style.display = "";
                     break;
             }
+            target_kind = e.target.value;
+            resetChart();
         });
 
         startBtn.addEventListener("click", function (e) {
             let what_kind = selectBox.options[selectBox.selectedIndex].value;
+            //장고 템플릿에 일반적인 방법으로 자바스크립트 변수를 반영하는 것은 불가능하다.
+            //구글링을 해보니 아래와 같이 특수한 방법으로 트릭을 줘서 해결할 수 있다는데,
+            //정확한 원리는 잘 모르겠지만 대략 템플릿 구문이 해석되기 이전에 바꿔치기를 하여 해결하는 방식인 것 같다.
             location.href = "{% url 'users:sports' what_kind='temp' %}".replace(/temp/, what_kind.toString());
         });
     })
 </script>
 
+<!-- SelectBox Button -->
+<label for="workouts">운동 종목 선택: </label>
+<select id="workouts">
+    <option value="squat">스쿼트</option>
+    <option value="dumbell_curl">덤벨컬</option>
+</select>
+<br><br>
+
+<!-- Radio Button -->
+운동 기간 선택: 
+<input type="radio" id="week" name="term" value="week" checked="checked">
+<label for="week">1주일</label>
+<input type="radio" id="halfMonth" name="term" value="halfMonth">
+<label for="halfMonth">15일</label>
+<input type="radio" id="month" name="term" value="month">
+<label for="month">30일</label>
+
 <!-- 그래프 처리 -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
-<div style="height: 400px; width: 600px;">
-    <canvas id="myChart" width="100" height="100"></canvas>
+<div style="width: 600px; height: 400px;">
+    <canvas id="myChart" width="6" height="4"></canvas>
 </div>
 <script>
+    //DB로 부터 받아온 값을 준비시키기
     let workout_date_temp = [];
     let workout_count_temp = [];
+    let what_kinds = [];
     {% for record in latest_records %}
         workout_date_temp.push("{{record.workout_date}}");
         workout_count_temp.push("{{record.workout_count}}");
+        what_kinds.push("{{record.what_kind}}");
     {% endfor %}
 
-    
-    function getDatesOfMonth(year, month) {
-        let datesOfMonth;
-        if (month == 0) {
-            datesOfMonth = new Date(year - 1, 12, 0).getDate();
-        } else {
-            datesOfMonth = new Date(year, month, 0).getDate();
-        }
-        return datesOfMonth;
-    }
-    
-    let workout_date = [];
-    let workout_count = [];
+    //설정값
+    let howMuch = 7;
+    let target_kind = "squat";
 
-    let mode = 1;
-    let howMuch = 30;
+    //function은 스크립트 코드 중에 가장 첫번째로 정의되는 특징이 있어 바로 위에 선언한 myChart를 인지하지 못한다.
+    //그래서 화살표 함수를 변수에 담는 방식으로 변경했다. 이렇게 하면 myChart변수가 할당된 이후 함수가 정의되기에 문제가 해결된다.
+    let myChart = null;
+    let resetChart = () => {
+        //본격적으로 그리기 전에 우선 해당 종목의 해당 일수만큼만 보여주기 위한 전처리 작업을 해준다.
+        let workout_date = [];
+        let workout_count = [];
 
-    if (mode == 0) {
-        for (let i = 0; i < howMuch && i < workout_date_temp.length; i++) {
-            workout_date.push(workout_date_temp[i]);
-            workout_count.push(workout_count_temp[i]);
-        }
-    } else {
         let today = new Date();
         let year = today.getFullYear();
         let month = today.getMonth() + 1; //+1을 해줘야 현재 몇월인지가 구해진다.
         let date = today.getDate();
-        for (let i = 0, j = 0; i < howMuch && j < workout_date_temp.length; i++) {
-            let day = workout_date_temp.length == 0 ? -1 : workout_date_temp[j].split(' ')[2].slice(0, -1);
+
+        for (let i = 0, j = 0; i < howMuch; i++) {
+            //해당 종목이 아니라면 건너 뛴다. 다만 끝에 다다랐다면 j가 length인 상태로 로직을 진행한다.
+            //그러면 아래서 자연히 day는 -1판정을 받으며 진행중인 날짜에 count가 0인 데이터를 채우게 될 것이다.
+            if (j < workout_date_temp.length && what_kinds[j] != target_kind) {
+                if (++j < workout_date_temp.length) {
+                    i--;
+                    continue;
+                }
+            }
+
+            let day = -1;
+            if (j < workout_date_temp.length) {
+                //일에 대한 숫자를 day로 뽑아낸다.
+                day = workout_date_temp[j].split(' ')[2].slice(0, -1);
+            }
+
             if (date == day) {
                 workout_date.push(workout_date_temp[j]);
                 workout_count.push(workout_count_temp[j]);
@@ -124,68 +146,66 @@
                 workout_date.push(year + "년 " + month + "월 " + date + "일");
                 workout_count.push(0);
             }
-    
+
             if (date == 1) {
-                month--;
-                date = getDatesOfMonth(year, month);
-                if (month == 0) {
+                if (--month == 0) {
                     year--;
                     month = 12;
                 }
+                date = new Date(year, month, 0).getDate();
             } else {
                 date--;
             }
         }
+
+        //가장 최근 날짜의 데이터가 끝에 가도록 뒤집어준다.
+        workout_date.reverse();
+        workout_count.reverse();
+        
+        //본격적으로 그리기 위해 캔버스를 불러온다.
+        let ctx = document.getElementById('myChart').getContext('2d');
+
+        //기존의 것을 파괴시켜주지 않으면 마우스로 그래프 영역 위를 움직일 때 기존 그래프의 정보표시창이 반응하여 자꾸 그림이 바뀌게 되는 현상이 발생한다.
+        //그래서 myChart가 기존에 그려진 적이 있다면 해당 인스턴스를 파괴하도록 하였다.
+        if (myChart != null) {
+            myChart.destroy();
+        }
+        myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: workout_date,
+                datasets: [{
+                    label: '운동 횟수',
+                    data: workout_count,
+                    backgroundColor: 'rgba(34, 116, 28, 0.2)',
+                    borderColor: 'rgba(196, 183, 59, 1)',
+                    borderWidth: 2
+                }]
+            },
+            options: {}
+        });
     }
 
-    workout_date.reverse();
-    workout_count.reverse();
-
-    console.log("test");
-    console.log(workout_date_temp);
-    console.log(workout_count_temp);
-    console.log("{{ latest_records }}");
-    alert('stop');
-
-    var ctx = document.getElementById('myChart').getContext('2d');
-    var myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: workout_date,
-            datasets: [{
-                label: '운동 횟수',
-                data: workout_count,
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)',
-                    'rgba(0, 0, 0, 0.2)'
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)',
-                    'rgba(0, 0, 0, 1)'
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }]
+    //input태그의 term이라고 이름붙여진 라디오 태그들 모두에게 본인이 클릭되었을 때에 대한 이벤트 리스너를 달아주었다.
+    document.querySelectorAll("input[name='term']").forEach(function (item) {
+        item.addEventListener("click", function (e) {
+            target_kind = document.querySelector("#workouts").value;
+            switch (e.target.id) {
+                case "week":
+                    howMuch = 7;
+                    break;
+                case "halfMonth":
+                    howMuch = 15;
+                    break;
+                case "month":
+                    howMuch = 30;
+                    break;
             }
-        }
-    });
+            resetChart();
+        })
+    })
+    //처음 이 페이지가 로드될 때 아직 이벤트가 발생하지 않았더라도 Chart를 한번 그려준다.
+    resetChart();
 </script>
 
 {% else %}

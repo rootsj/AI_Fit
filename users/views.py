@@ -7,6 +7,10 @@ import base64
 from django.core.files.base import ContentFile
 
 # Create your views here.
+# 사용자가 F5를 눌러 새로고침을 해줄 수도 있을 텐데 계속 csrf때문에 페이지가 깨지고 뒤로 가더라도 그래프가 보이지 않아 다시 로그인을 해야하는 이슈가 있었다.
+# 보안적인 측면에선 좋지 않겠지만 원활한 서비스를 위해 일단 csrf검증을 취소시켜서 해결하였다.
+from django.views.decorators.csrf import csrf_exempt
+@csrf_exempt
 def login_view(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
@@ -17,9 +21,7 @@ def login_view(request):
 
             if user is not None:
                 login(request, user)
-
                 latest_records = DailyRecord.objects.filter(user=user.id).order_by('-workout_date')[:30]
-
                 return render(request, "users/login.html", {'latest_records': latest_records})
 
     else:
@@ -57,7 +59,7 @@ def signup_view(request):
 
     return render(request, "users/signup.html", {'form': form})
 
-# 추가
+
 def sports_view(request, what_kind):
     return render(request, "users/sports.html", {'what_kind': what_kind})
     
