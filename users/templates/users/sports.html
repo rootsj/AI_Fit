@@ -41,6 +41,8 @@
 <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/pose@0.8/dist/teachablemachine-pose.min.js"></script>
 <script type="text/javascript">
 
+    let what_kind = "{{ what_kind }}"
+
     window.onload = function ()
     {
         init()
@@ -55,8 +57,8 @@
 
     // init함수 정의 : squat_model 폴더안의 모델, 메타 데이터 불러오기
     async function init() {
-        const modelURL = URL + "{{ what_kind }}" + "/model.json";
-        const metadataURL = URL + "{{ what_kind }}" + "/metadata.json";
+        const modelURL = URL + what_kind + "/model.json";
+        const metadataURL = URL + what_kind + "/metadata.json";
 
         // load the model and metadata
         // Refer to tmImage.loadFromFiles() in the API to support files from a file picker
@@ -95,7 +97,7 @@
 <script>
     function sendCountEnd() {
         let count_result = count
-        location.href = "/auth/sports/counts/" + count_result
+        location.href = "/auth/sports/counts/" + count_result + "/" + what_kind
     }
 
     function drawPose(pose) {
