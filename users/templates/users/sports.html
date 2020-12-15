@@ -16,12 +16,12 @@
     <div>Teachable Machine Pose Model</div> 
 <div><canvas id="canvas"></canvas></div>
 <div id="label-container"></div>
+<button type="button" id="end" onclick="sendCountEnd()">End</button>
+
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/pose@0.8/dist/teachablemachine-pose.min.js"></script>
 <script type="text/javascript">
-    // $(document).ready(function(){
-    //     init()
-    // });
+
     window.onload = function ()
     {
         init()
@@ -105,6 +105,11 @@
 
         // finally draw the poses
         drawPose(pose);
+    }
+
+    function sendCountEnd() {
+        let count_result = count
+        location.href = "/auth/sports/counts/" + count_result
     }
 
     function drawPose(pose) {

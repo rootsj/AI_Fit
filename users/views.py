@@ -62,4 +62,8 @@ def signup_view(request):
 
 def sports_view(request, what_kind):
     return render(request, "users/sports.html", {'what_kind': what_kind})
-    
+
+def count_view(request, count_result):
+    print("hihi my test")
+    print(count_result)
+    return redirect("users:login")

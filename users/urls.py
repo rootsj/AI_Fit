@@ -7,5 +7,6 @@ urlpatterns = [
     path("login", views.login_view, name="login"),
     path("logout", views.logout_view, name="logout"),
     path("signup", views.signup_view, name="signup"),
-    path("sports/<str:what_kind>", views.sports_view, name="sports"),       # 추가
+    path("sports/<str:what_kind>", views.sports_view, name="sports"),
+    path("sports/counts/<int:count_result>", views.count_view, name="counts")
 ]
