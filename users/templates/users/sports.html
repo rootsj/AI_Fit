@@ -9,10 +9,29 @@
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/earlyaccess/notosanskr.css">
     <title>AI Fitness Trainer</title>
-    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/sports.css">
 </head>
 
 <body>
+    <div class="container mt-5">
+        <div class="frame">
+            <div class="center">
+                <div class="headline">
+                    <div class="small">{{ what_kind }}</div>Counter
+                </div>
+                <div class="circle-big">
+                    <div class="text">
+                        <span id="counter">0</span>  <!-- count up 미구현 -->
+                        <div class="small">개</div>
+                    </div>
+                    <svg>
+                        <circle class="bg" cx="57" cy="57" r="52" />
+                        <circle class="progress" cx="57" cy="57" r="52" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+
     <div>Teachable Machine Pose Model</div> 
 <div><canvas id="canvas"></canvas></div>
 <div id="label-container"></div>
@@ -34,6 +53,7 @@
     const URL = "/static/model/";
     let model, webcam, ctx, labelContainer, maxPredictions;
 
+    // init함수 정의 : squat_model 폴더안의 모델, 메타 데이터 불러오기
     async function init() {
         const modelURL = URL + "{{ what_kind }}" + "/model.json";
         const metadataURL = URL + "{{ what_kind }}" + "/metadata.json";
@@ -45,7 +65,7 @@
         maxPredictions = model.getTotalClasses();
 
         // Convenience function to setup a webcam
-        const size = 200;
+        const size = 600; // 절대 크기 => 상대 크기로 변경해야 반응형 웹 구현 가능
         const flip = true; // whether to flip the webcam
         webcam = new tmPose.Webcam(size, size, flip); // width, height, flip
         await webcam.setup(); // request access to the webcam
@@ -62,51 +82,17 @@
         }
     }
 
+    //loop함수는 webcam 계속 update하면서 predict()함수로 에측을 수행
     async function loop(timestamp) {
         webcam.update(); // update the webcam frame
         await predict();
         window.requestAnimationFrame(loop);
     }
-    var status = "straight"
-    var count = 0
-    async function predict() {
-        // Prediction #1: run input through posenet
-        // estimatePose can take in an image, video or canvas html element
-        const { pose, posenetOutput } = await model.estimatePose(webcam.canvas);
-        // Prediction 2: run input through teachable machine classification model
-        const prediction = await model.predict(posenetOutput);
-        if(prediction[0].probability.toFixed(2) > 0.70){
-            console.log("straight")
-            status = "straight"
-        } else if(prediction[1].probability.toFixed(2) > 0.90){
-            console.log("no straight armcurl")
-            if(status == "straight"){
-                console.log("armcurl")
-                count++
-                console.log("count", count)
-                var audio = new Audio('/static/sound/' + count%10 + '.mp3');
-                audio.play();
-                
-            }
-            status = "armcurl"         
-        } else if(prediction[2].probability.toFixed(2) > 0.50){
-            console.log("bent")
-            if(status == "straight" || status == "armcurl"){
-                var audio = new Audio('/static/sound/bent.mp3');
-                audio.play();
-            }
-            status = "bent"
-        }
-        for (let i = 0; i < maxPredictions; i++) {
-            const classPrediction =
-                prediction[i].className + ": " + prediction[i].probability.toFixed(2);
-            labelContainer.childNodes[i].innerHTML = classPrediction;
-        }
+</script>
 
-        // finally draw the poses
-        drawPose(pose);
-    }
+<script src="/static/model/{{ what_kind }}/{{ what_kind }}.js"></script>
 
+<script>
     function sendCountEnd() {
         let count_result = count
         location.href = "/auth/sports/counts/" + count_result

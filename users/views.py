@@ -45,7 +45,7 @@ def signup_view(request):
             date_of_birth = form.cleaned_data['date_of_birth']
 
             data = request.POST['profile_img']
-
+            
             img_fmt, img_str = data.split(';base64,')
             ext = img_fmt.split('/')[-1]
             profile_img = ContentFile(base64.b64decode(img_str), name='profile.' + ext)
