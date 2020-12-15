@@ -71,3 +71,6 @@ class DailyRecord(models.Model):
     what_kind = models.CharField(max_length=50)
     workout_date = models.DateField('workout date')
     workout_count = models.IntegerField(default=0)
+
+    class Meta:
+        unique_together = ('user', 'what_kind', 'workout_date')

@@ -6,6 +6,9 @@ from .models import User, DailyRecord
 import base64
 from django.core.files.base import ContentFile
 
+from datetime import datetime
+
+
 # Create your views here.
 # 사용자가 F5를 눌러 새로고침을 해줄 수도 있을 텐데 계속 csrf때문에 페이지가 깨지고 뒤로 가더라도 그래프가 보이지 않아 다시 로그인을 해야하는 이슈가 있었다.
 # 보안적인 측면에선 좋지 않겠지만 원활한 서비스를 위해 일단 csrf검증을 취소시켜서 해결하였다.
@@ -14,6 +17,7 @@ from django.views.decorators.csrf import csrf_exempt
 def login_view(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
+
         if form.is_valid():
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
@@ -23,6 +27,11 @@ def login_view(request):
                 login(request, user)
                 latest_records = DailyRecord.objects.filter(user=user.id).order_by('-workout_date')[:30]
                 return render(request, "users/login.html", {'latest_records': latest_records})
+
+    elif request.user.is_authenticated:
+        user = request.user
+        latest_records = DailyRecord.objects.filter(user=user.id).order_by('-workout_date')[:30]
+        return render(request, "users/login.html", {'latest_records': latest_records})
 
     else:
         form = LoginForm()
@@ -38,6 +47,7 @@ def logout_view(request):
 def signup_view(request):
     if request.method == 'POST':
         form = SignupForm(request.POST, request.FILES)
+
         if form.is_valid():
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
@@ -63,8 +73,18 @@ def signup_view(request):
 def sports_view(request, what_kind):
     return render(request, "users/sports.html", {'what_kind': what_kind})
 
+
 def count_view(request, count_result, what_kind):
-    print("hihi my test")
-    print(count_result)
-    print(what_kind)
+    if count_result <= 0:
+        return redirect("users:login")
+
+    user = request.user
+    workout_date = datetime.today().strftime("%Y-%m-%d")
+    try:
+        record = DailyRecord.objects.get(user=user, what_kind=what_kind, workout_date=workout_date)
+        record.workout_count += count_result
+        record.save()
+    except DailyRecord.DoesNotExist:
+        DailyRecord.objects.create(user=user, what_kind=what_kind, workout_date=workout_date, workout_count=count_result)
+
     return redirect("users:login")
