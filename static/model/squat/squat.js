@@ -15,8 +15,8 @@ async function predict() {
         console.log("stand, squat")
         if (status == "squat") {
             count++;
-            console.log("count", count)
-            var audio = new Audio('/static/sound/' + count % 10 + '.mp3');
+            document.getElementById('counter').innerHTML = count;
+            let audio = new Audio('/static/sound/' + count % 10 + '.mp3');
             audio.play();
         }
         status = "stand"
@@ -36,7 +36,7 @@ async function predict() {
         if (bentcount % 40 == 0) {
             status = "bent"
             console.log(bentcount)
-            var audio = new Audio('/static/sound/bent.mp3');
+            let audio = new Audio('/static/sound/bent.mp3');
             audio.play();
         }
     }

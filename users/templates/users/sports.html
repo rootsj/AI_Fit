@@ -21,7 +21,7 @@
                 </div>
                 <div class="circle-big">
                     <div class="text">
-                        <span id="counter">0</span>  <!-- count up 미구현 -->
+                        <span id="counter">0</span>
                         <div class="small">개</div>
                     </div>
                     <svg>
@@ -95,6 +95,7 @@
 <script src="/static/model/{{ what_kind }}/{{ what_kind }}.js"></script>
 
 <script>
+    
     function sendCountEnd() {
         let count_result = count
         location.href = "/auth/sports/counts/" + count_result + "/" + what_kind
