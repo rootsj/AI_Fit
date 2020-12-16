@@ -5,7 +5,7 @@
 
 로그인 성공! {{ user.nick_name }}님 환영합니다.<br>
 {% if user.profile_img %}
-    <img src="{{ user.profile_img.url }}" width="100" height="100" alt="프로필사진"><br>
+    <img src="{{ user.profile_img.url }}" height="120" alt="프로필사진"><br>
 {% endif %}
 <a href="{% url 'users:logout' %}">로그아웃</a>
 <br><br>
