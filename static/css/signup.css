@@ -1,3 +1,13 @@
+body{
+    background-color: #d7d7d8;
+}
+
 #mainimg {
     height: 200px;
+}
+
+#camera{
+    width: 320px;
+    height: 240px;
+    border: 1px solid black;
 }

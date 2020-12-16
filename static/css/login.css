@@ -1,0 +1,100 @@
+body{
+    background-color: #d7d7d8;
+}
+
+/* TOP AREA */
+
+.top_box {
+    display: flex;
+    justify-content: space-between; 
+    height: 15%;
+}
+
+.profile_box {
+    display: flex;
+    align-items: center;
+    width: 50%;
+    margin-left: 2%;
+}
+
+.profile_image {
+    height: 70%;
+    border-radius: 40%;
+    overflow: hidden;
+    object-fit: cover;
+}
+
+.welcome {
+    margin-left: 5%;
+    font-size: 5vmin;
+}
+
+.setting_box{
+    display:flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-right: 2%;
+}
+
+.logout_btn{
+    font-size: 3vmin;
+}
+
+
+/* MIDDLE AREA */
+
+@media (orientation: portrait) {
+    /* 세로 모드일 때 적용할 CSS */
+    .body{
+        display: flex;
+        justify-content: space-around;
+        flex-direction: column;
+    }
+
+    .above_sec{
+        height: 50%;
+    }
+    .below_sec{
+        height: 50%;
+    }
+}
+
+@media (orientation: landscape) {
+    /* 가로 모드일 때 적용할 CSS */
+    .body{
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .above_sec{
+        width: 50%;
+    }
+    .below_sec{
+        width: 50%;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        flex-direction: column;
+    }
+}
+
+.select_box{
+    text-align: center;
+}
+
+.video_frame{
+    text-align: center;
+}
+
+.video{
+    width: 80%;
+}
+
+.control_btns{
+    display: flex;
+    justify-content: space-around;
+}
+
+.graph_frame{
+    width: 80%;
+}

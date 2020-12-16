@@ -1,4 +1,5 @@
-body {
+body{
+	background-color: #648192;
 	font: 24px/30px 'Noto Sans CJK KR', Noto Sans KR, sans-serif
 }
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:600,400,300);
