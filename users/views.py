@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
+from django.http import HttpResponse
+
 from .forms import LoginForm, SignupForm
 from .models import User, DailyRecord
 
@@ -37,6 +39,29 @@ def login_view(request):
         form = LoginForm()
 
     return render(request, "users/login.html", {'form': form})
+
+
+@csrf_exempt
+def face_login_view(request):
+    if request.method == 'POST':
+        if request.session['test_count'] == 250:
+            user = authenticate(email='blue', password='blue')
+            if user is not None:
+                login(request, user)
+                del request.session['test_count']
+                return HttpResponse("OK_Face")
+
+            form = LoginForm()
+            return render(request, "users/login.html", {'form': form})
+
+        request.session['test_count'] += 1
+        print(request.session['test_count'])
+
+        # print(request.body.decode('utf-8'))
+        return HttpResponse(request.body)
+
+    request.session['test_count'] = 0
+    return render(request, "users/facelogin.html")
 
 
 def logout_view(request):

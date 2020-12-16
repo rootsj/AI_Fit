@@ -1,0 +1,79 @@
+<style>
+    #camera{
+        width: 320px;
+        height: 240px;
+        border: 1px solid black;
+    }
+</style>
+
+클라이언트에서의 웹캠
+<div id="camera"></div>
+<br>
+
+서버로 전송했다가 다시 되돌려 받은 이미지를 출력
+<div id="results"></div>
+<br>
+되돌려 받고나면 다시 사진 찍고 재전송<br>
+이런식으로 250장의 이미지를 주고받고 나면 blue라는 계정으로 자동로그인<br>
+임시로 이렇게 해놓은 것이고 나중엔 얼굴인식으로 자동로그인 구현 예정<br>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.js"></script>
+<script>
+    Webcam.set({
+        width: 320,
+        height: 240,
+        image_format: 'jpeg',
+        jpeg_quality: 90
+    });
+    Webcam.attach("#camera");
+
+    let ready = false;
+    let myTimer = setInterval(() => {
+        if (ready) {
+            ready = false;
+            sendFaceImage();
+        }
+    }, 10);
+
+    Webcam.on('live', () => {
+        ready = true;
+    });
+
+    function sendFaceImage() {
+        Webcam.snap(function (data) {
+            fetch('/auth/facelogin', {
+                method: 'POST',
+                body: data
+            })
+            .then(e => {
+                e.text().then(e => {
+                    if (e == 'OK_Face') {
+                        clearInterval(myTimer);
+                        location.href = "{% url 'users:login' %}";
+                        return;
+                    }
+                    document.getElementById('results').innerHTML = '<img src="' + e + '"/>';
+                    ready = true;
+                });
+            })
+            .catch(e => console.error(e))
+        });
+    }
+</script>
+
+<div id="results"></div>
+<br><br>
+<a href="javascript:idpwLogin();">ID/PW Login</a>&nbsp;&nbsp;
+<a href="javascript:signup();">회원가입</a>
+
+<script>
+    function idpwLogin() {
+        clearInterval(myTimer);
+        location.href = "{% url 'users:login' %}";
+    }
+
+    function signup() {
+        clearInterval(myTimer);
+        location.href = "{% url 'users:signup' %}";
+    }
+</script>

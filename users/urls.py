@@ -5,6 +5,7 @@ app_name = "users"
 
 urlpatterns = [
     path("login", views.login_view, name="login"),
+    path("facelogin", views.face_login_view, name="face_login"),
     path("logout", views.logout_view, name="logout"),
     path("signup", views.signup_view, name="signup"),
     path("sports/<str:what_kind>", views.sports_view, name="sports"),

@@ -200,7 +200,7 @@
             }
             resetChart();
         })
-    })
+    });
     //처음 이 페이지가 로드될 때 아직 이벤트가 발생하지 않았더라도 Chart를 한번 그려준다.
     resetChart();
 </script>
@@ -213,6 +213,7 @@
     {{ form.as_p }}
     <input type="submit" value="로그인">
 </form>
+<a href="{% url 'users:face_login' %}">Face Login</a>&nbsp;&nbsp;
 <a href="{% url 'users:signup' %}">회원가입</a>
 
 {% endif %}

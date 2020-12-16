@@ -1,7 +1,7 @@
 <style>
     #camera{
-        width: 350;
-        height: 350;
+        width: 320px;
+        height: 240px;
         border: 1px solid black;
     }
 </style>
@@ -11,23 +11,24 @@
 회원가입 페이지<br>
 <img src="{% static 'image/1.jpg' %}" id="mainimg" alt=""><br>
 
-<div id="camera"></div>
-    <button onclick="take_snapshot()">Take Snapshot</button>
-<div id="results"></div>
+<div id="camera"></div><br>
+<button onclick="take_snapshot();">프로필사진 촬영</button>
+※ 프로필사진은 얼굴인식 로그인 기능으로도 활용됩니다.<br><br>
+
+<div id="results"></div><br>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.js"></script>
 <script>
-    // Load all webcam
     Webcam.set({
-        width: 350,
-        height: 350,
+        width: 320,
+        height: 240,
         image_format: 'jpeg',
         jpeg_quality: 90
-    })
-    Webcam.attach("#camera")
+    });
+    Webcam.attach("#camera");
     
     function take_snapshot(){
         Webcam.snap(function(data_uri){
-            // display results in page
             document.getElementById('results').innerHTML = '<img src="' + data_uri + '"/>';
             document.getElementById('profile_img').value = data_uri;
         })
@@ -41,3 +42,4 @@
     <input name="profile_img" id="profile_img" type="hidden" value="">
     <input type="submit" value="회원가입">
 </form>
+<a href="{% url 'users:login' %}">[로그인 페이지]</a>
