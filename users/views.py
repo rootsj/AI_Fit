@@ -77,7 +77,8 @@ def signup_view(request):
 
         if form.is_valid():
             email = form.cleaned_data['email']
-            password = form.cleaned_data['password']
+            password1 = form.cleaned_data['password1']
+            password2 = form.cleaned_data['password2']
             nick_name = form.cleaned_data['nick_name']
             date_of_birth = form.cleaned_data['date_of_birth']
 
@@ -87,9 +88,9 @@ def signup_view(request):
             ext = img_fmt.split('/')[-1]
             profile_img = ContentFile(base64.b64decode(img_str), name='profile.' + ext)
 
-            user = User.objects.create_user(email, password, nick_name, date_of_birth, profile_img)
-
-            return redirect("users:login")
+            if password1 == password2:
+                user = User.objects.create_user(email, password1, nick_name, date_of_birth, profile_img, representation)
+                return redirect("users:login")
 
     else:
         form = SignupForm()
