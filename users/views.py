@@ -91,7 +91,9 @@ def signup_view(request):
 
             if password1 == password2:
                 if data != '':
-                    user = User.objects.create_user(email, password1, nick_name, date_of_birth, profile_img, representation)
+                    user = User.objects.create_user(email, password1, nick_name, date_of_birth, profile_img, 
+                    #representation
+                    )
                 else:
                     user = User.objects.create_user(email, password1, nick_name, date_of_birth)
                 return redirect("users:login")
