@@ -119,7 +119,7 @@ def user_edit(request):
                 else:
                     context['form'] = form
                     context.update({'error':"새로운 비밀번호를 다시 확인해주세요."})
-                    # context['error'] = '따단!'
+                    # context['error'] = '새로운 비밀번호를 다시 확인해주세요.'
             else:
                 context['form'] = form
                 context.update({'error':"현재 비밀번호가 일치하지 않습니다."})
