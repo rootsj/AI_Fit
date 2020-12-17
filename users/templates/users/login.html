@@ -1,14 +1,14 @@
-
 {% load static %}
 <link rel="stylesheet" href="/static/css/login.css">
+<script src="/static/js/jquery-3.5.1.min.js"></script>
 
 {% if user.is_authenticated %}
 
-{% if user.profile_img %} 
-
 <div class="top_box">
     <div class="profile_box">
+        {% if user.profile_img %} 
         <img class="profile_image" src="{{ user.profile_img.url }}" alt="프로필사진">
+        {% endif %}
         <div class="welcome">
             {{ user.nick_name }}
         </div>
@@ -17,8 +17,6 @@
         <a class="logout_btn" href="{% url 'users:logout' %}">Logout</a>
     </div>
 </div>
-
-{% endif %}
 
 <!-- 전체 -->
 <div class="body">
@@ -245,14 +243,53 @@
 
 {% else %}
 
-로그인페이지<br>
-<img src="{% static 'image/2.jpg' %}" alt=""><br>
-<form action="" method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="로그인">
-</form>
-<a href="{% url 'users:face_login' %}">Face Login</a>&nbsp;&nbsp;
-<a href="{% url 'users:signup' %}">회원가입</a>
+<div class="login_body">
+
+<section class="login-form">
+    <h1>A.I.FIT</h1>
+    <form action="" method="POST">
+        {% csrf_token %}
+        <div class="int-area">
+            <!-- <input type="text" name="id" id="id" autocomplete="off" required> -->
+            {{ form.email }}
+            <label for="id_email">USER NAME</label>
+        </div>
+        <div class="int-area">
+            <!-- <input type="password" name="pw" id="pw" autocomplete="off" required> -->
+            {{ form.password }}
+            <label for="id_password">PASSWORD</label>
+        </div>
+        <div class="btn-area">
+            <button id="btn" type="submit" value="로그인">LOGIN</button>
+        </div>
+    </form>
+    <div class="caption">
+        <a href="">Forgot Password?</a><br>
+        <a href="{% url 'users:face_login' %}">Face Login</a>
+        <a href="{% url 'users:signup' %}">회원가입</a>
+    </div>
+</section>
+</div>
+
+<script>
+    let id = $('#id');
+    let pw = $('#pw');
+    let btn = $('#btn');
+
+    $(btn).on('click', function() {
+        if($(id).val() == "") {
+            $(id).next('label').addClass('warning');
+            setTimeout(function() {
+                $('label').removeClass('warning');
+            }, 1500)
+        }
+        else if($(pw).val() == "") {
+            $(pw).next('label').addClass('warning');
+            setTimeout(function() {
+                $('label').removeClass('warning');
+            }, 1500)
+        }
+    })
+</script>
 
 {% endif %}
