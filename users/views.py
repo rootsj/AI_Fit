@@ -2,11 +2,13 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
 
-from .forms import LoginForm, SignupForm
+from .forms import LoginForm, SignupForm, EditForm
 from .models import User, DailyRecord
 
 import base64
 from django.core.files.base import ContentFile
+from django.contrib.auth.hashers import check_password
+# 장고에서 제공해주는 비밀번호 검증 메소드
 
 from datetime import datetime
 
@@ -93,6 +95,35 @@ def signup_view(request):
         form = SignupForm()
 
     return render(request, "users/signup.html", {'form': form})
+
+def user_edit(request):
+    context= {}
+    if request.method == "POST":
+        form = EditForm(request.POST)
+        if form.is_valid():
+            current_password = form.cleaned_data['current_password']
+            user = request.user
+            if check_password(current_password,user.password):
+                password1 = form.cleaned_data['password1']
+                password2 = form.cleaned_data['password2']
+                if password1 == password2:
+                    user.set_password(password2)
+                    user.save()
+                    login(request,user)
+                    return redirect("users:login")
+                else:
+                    context['form'] = form
+                    context.update({'error':"새로운 비밀번호를 다시 확인해주세요."})
+                    # context['error'] = '따단!'
+            else:
+                context['form'] = form
+                context.update({'error':"현재 비밀번호가 일치하지 않습니다."})
+
+        return render(request, "users/useredit.html", context )
+    else:
+        context['form'] = EditForm()
+
+    return render(request, "users/useredit.html", context)
 
 
 def sports_view(request, what_kind):
