@@ -32,7 +32,18 @@
 <form action="" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     * 표시 항목은 필수 작성<br>
-    {{ form.as_p }}
+    <p> Email </p>
+    {{ form.email }}
+    <p> password </p>
+    <div class="input_container">
+        {{ form.password1 }}
+    </div>
+    {{ form.password2 }}
+    <p> 닉네임 </p>
+    {{ form.nick_name }}
+    <p> 생일 </p>
+    {{ form.date_of_birth }}
+
     <input name="profile_img" id="profile_img" type="hidden" value="">
     <input type="submit" value="회원가입">
 </form>
