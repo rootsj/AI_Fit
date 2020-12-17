@@ -84,12 +84,16 @@ def signup_view(request):
 
             data = request.POST['profile_img']
             
-            img_fmt, img_str = data.split(';base64,')
-            ext = img_fmt.split('/')[-1]
-            profile_img = ContentFile(base64.b64decode(img_str), name='profile.' + ext)
+            if data != '':
+                img_fmt, img_str = data.split(';base64,')
+                ext = img_fmt.split('/')[-1]
+                profile_img = ContentFile(base64.b64decode(img_str), name='profile.' + ext)
 
             if password1 == password2:
-                user = User.objects.create_user(email, password1, nick_name, date_of_birth, profile_img, representation)
+                if data != '':
+                    user = User.objects.create_user(email, password1, nick_name, date_of_birth, profile_img, representation)
+                else:
+                    user = User.objects.create_user(email, password1, nick_name, date_of_birth)
                 return redirect("users:login")
 
     else:
