@@ -90,16 +90,13 @@
     cursor:pointer
 }
 
-.caption {
+.process {
     display: flex;
     justify-content: space-evenly;
     margin-top: 3%;
     text-align: center;
-}
-.caption a {
-    font-size: 2vh;
-    color: #fff;
-    text-decoration: none;
+    font-size: 1.5vh;
 }
 
-
+.process a:link { color: white; text-decoration: none; }
+.process a:visited { color: white; text-decoration: none;}

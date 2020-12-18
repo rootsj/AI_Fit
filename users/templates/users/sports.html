@@ -6,13 +6,16 @@
     
 <title>AI Fitness Trainer</title>
 <link rel="stylesheet" href="/static/css/base.css">
+<link rel="stylesheet" href="/static/css/button.css">
 <link rel="stylesheet" href="/static/css/sports.css">
 
 <!-- body start -->
+<body>
+<div class="top"></div>
 <div class="body"> 
 
 <div class="section" id="above">
-    <div>Teachable Machine Pose Model</div> 
+    <div class="title">{{ what_kind }} start</div> 
     <div><canvas id="canvas"></canvas></div>
     <div id="label-container"></div>
     
@@ -20,32 +23,33 @@
         <div class="btn__content" id="end" onclick="sendCountEnd()">
             End_
         </div>
-        <span class="btn__label">A.I.fit</span>
-        <span class="btn__glitch"></span>
+        <span class="btn__label" id="btn_end__label">A.I.FIT</span>
+        <span id="btn_end__glitch"></span>
     </div>
 </div>
 
 <div class="section" id="below">
-    <div class="container mt-5">
-        <div class="frame">
-            <div class="center">
-                <div class="headline">
-                    <div class="small">{{ what_kind }}</div>Counter
+    <div class="frame">
+        <div class="center">
+            <div class="headline">
+                <div class="small">{{ what_kind }}</div>Counter
+            </div>
+            <div class="circle-big">
+                <div class="text">
+                    <span id="counter">0</span>
+                    <div class="small">개</div>
                 </div>
-                <div class="circle-big">
-                    <div class="text">
-                        <span id="counter">0</span>
-                        <div class="small">개</div>
-                    </div>
-                    <svg>
-                        <circle class="bg" cx="57" cy="57" r="52" />
-                        <circle class="progress" cx="57" cy="57" r="52" />
-                    </svg>
-                </div>
+                <svg>
+                    <circle class="bg" cx="57" cy="57" r="52" />
+                    <circle class="progress" cx="57" cy="57" r="52" />
+                </svg>
             </div>
         </div>
+    </div>
 </div>
-</div><!-- body div end -->
+</div>
+</body>
+<!-- body end -->
 
 
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
@@ -78,7 +82,7 @@
         maxPredictions = model.getTotalClasses();
 
         // Convenience function to setup a webcam
-        let size = 600; // 절대 크기 => 상대 크기로 변경해야 반응형 웹 구현 가능
+        let size = 500; // 절대 크기 => 상대 크기로 변경해야 반응형 웹 구현 가능
         const flip = true; // whether to flip the webcam
         webcam = new tmPose.Webcam(size, size, flip); // width, height, flip
         await webcam.setup(); // request access to the webcam
