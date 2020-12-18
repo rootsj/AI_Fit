@@ -1,11 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap');
-
 * {margin: 0; padding: 0; box-sizing: border-box;}
-
-
-body{
-    background-color: #d7d7d8;
-}
 
 /* LOGIN PAGE*/
 .login_body{
@@ -14,7 +7,7 @@ body{
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: url("/static/image/background.png") no-repeat center;
+    background: url("/static/image/bodybuilding.jpg") no-repeat center;
     background-size: cover;
 }
 
@@ -27,12 +20,15 @@ body{
 
 .login-form{
     position: relative;  z-index: 2;
+    background-color: rgba(0,0,0,.5);
+    margin-top: -5%;
+    margin-bottom: 5%;
 }
 
 .login-form h1 {
     font-size: 10vh; color: #fff;
     text-align: center;
-    margin-bottom: 10%;
+    margin-bottom: 15%;
 }
 
 .int-area{
@@ -62,7 +58,7 @@ body{
     transition: all .5s ease;
 }
 .int-area label.warning {
-    color: red !important;
+    color: var(--yellow-color) !important;
     animation: warning .2s ease;
     animation-iteration-count:2;
 }
@@ -80,7 +76,8 @@ body{
 }
 
 .btn-area {
-    margin-top: 7%;
+    margin-top: 10%;
+    margin-bottom: 5%;
 }
 .btn-area button {
     width: 100%;
@@ -106,160 +103,3 @@ body{
 }
 
 
-/* MY PAGE */
-
-/* TOP AREA */
-
-.top_box {
-    display: flex;
-    justify-content: space-between; 
-    height: 15%;
-}
-
-.profile_box {
-    display: flex;
-    align-items: center;
-    width: 50%;
-    margin-left: 2%;
-}
-
-.profile_image {
-    height: 70%;
-    border-radius: 40%;
-    overflow: hidden;
-    object-fit: cover;
-}
-
-.welcome {
-    margin-left: 5%;
-    font-size: 5vmin;
-}
-
-.setting_box{
-    display:flex;
-    justify-content: space-around;
-    align-items: center;
-    margin-right: 2%;
-}
-
-.logout_btn{
-    font-size: 3vmin;
-}
-
-
-/* MIDDLE AREA */
-
-@media (orientation: portrait) {
-    /* 세로 모드일 때 적용할 CSS */
-    .body{
-        display: flex;
-        justify-content: space-around;
-        flex-direction: column;
-    }
-
-    .above_sec{
-        height: 50%;
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        flex-direction: column;
-    }
-    .below_sec{
-        height: 50%;
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        flex-direction: column;
-    }
-}
-
-@media (orientation: landscape) {
-    /* 가로 모드일 때 적용할 CSS */
-    .body{
-        display: flex;
-        justify-content: space-around;
-    }
-
-    .above_sec{
-        width: 50%;
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        flex-direction: column;
-    }
-    .below_sec{
-        width: 50%;
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        flex-direction: column;
-    }
-}
-
-.selectbox {
-    position: relative;
-    width: 200px;  /* 너비설정 */
-    border: 1px solid #999;  /* 테두리 설정 */
-    z-index: 1;
-
-    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-    -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
-    -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-
-}
-
-/* 가상 선택자를 활용 화살표 대체 */
-.selectbox:before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    right: 15px;
-    width: 0;
-    height: 0;
-    margin-top: -1px;
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-    border-top: 5px solid #333;
-}
-
-.selectbox label {
-    position: absolute;
-    top: 1px;  /* 위치정렬 */
-    left: 5px;  /* 위치정렬 */
-    padding: .8em .5em;  /* select의 여백 크기 만큼 */
-    color: #999;
-    z-index: -1;  /* IE8에서 label이 위치한 곳이 클릭되지 않는 것 해결 */
-}
-
-.selectbox select {
-    width: 100%;
-    height: auto;  /* 높이 초기화 */
-    line-height: normal;  /* line-height 초기화 */
-    font-family: inherit;  /* 폰트 상속 */
-    padding: .8em .5em;  /* 여백과 높이 결정 */
-    border: 0;
-    opacity: 0;  /* 숨기기 */
-    filter:alpha(opacity=0);  /* IE8 숨기기 */
-    -webkit-appearance: none; /* 네이티브 외형 감추기 */
-    -moz-appearance: none;
-    appearance: none;
-}
-
-.video_frame{
-    text-align: center;
-}
-
-.video{
-    width: 80%;
-}
-
-.control_btns{
-    display: flex;
-    justify-content: space-around;
-}
-
-.graph_frame{
-    width: 80%;
-}

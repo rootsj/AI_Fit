@@ -1,28 +1,33 @@
 {% load static %}
+<link rel="stylesheet" href="/static/css/base.css">
 <link rel="stylesheet" href="/static/css/login.css">
+<link rel="stylesheet" href="/static/css/mypage.css">
 <script src="/static/js/jquery-3.5.1.min.js"></script>
 
 {% if user.is_authenticated %}
 
-<div class="top_box">
-    <div class="profile_box">
-        {% if user.profile_img %} 
-        <img class="profile_image" src="{{ user.profile_img.url }}" alt="프로필사진">
-        {% endif %}
-        <div class="welcome">
-            {{ user.nick_name }}
+<div class="top">
+    <div class="top__content"></div>
+        <div class="profile_box">
+            {% if user.profile_img %} 
+            <img class="profile_image" src="{{ user.profile_img.url }}" alt="프로필사진">
+            {% endif %}
+            <div class="welcome">
+                {{ user.nick_name }}_
+            </div>
+        </div>
+        <div class="setting_box">
+            <a class="logout_btn" href="{% url 'users:logout' %}">Logout</a>
         </div>
     </div>
-    <div class="setting_box">
-        <a class="logout_btn" href="{% url 'users:logout' %}">Logout</a>
-    </div>
+    <span class="top__label">A.I.fit</span>
 </div>
 
 <!-- 전체 -->
 <div class="body">
 
 <!-- 동영상, 영상 선택 단 -->
-<div class="above_sec">
+<div class="section" id="above">
 
     <!-- SelectBox Button -->
     <div class="selectbox">
@@ -44,15 +49,21 @@
     <!-- Prev Start Next Button -->
     <div class="control_btns">
         <button type="button" id="prev">Prev</button>
-        <button type="button" id="start">Start</button>
         <button type="button" id="next">Next</button>
+    </div>
+    <div class="btn" id="start_btn">
+        <div class="btn__content" id="start">
+            Start_
+        </div>
+        <span class="btn__label">A.I.fit</span>
+        <span class="btn__glitch"></span>
     </div>
 
 </div>
 
 
 <!-- 기간, 그래프단 -->
-<div class="below_sec">
+<div class="section" id="below">
 
     <!-- Radio Button -->
     <div class="radio_btns">
@@ -250,12 +261,10 @@
     <form action="" method="POST">
         {% csrf_token %}
         <div class="int-area">
-            <!-- <input type="text" name="id" id="id" autocomplete="off" required> -->
             {{ form.email }}
             <label for="id_email">USER NAME</label>
         </div>
         <div class="int-area">
-            <!-- <input type="password" name="pw" id="pw" autocomplete="off" required> -->
             {{ form.password }}
             <label for="id_password">PASSWORD</label>
         </div>
@@ -272,8 +281,8 @@
 </div>
 
 <script>
-    let id = $('#id');
-    let pw = $('#pw');
+    let id = $('#id_email');
+    let pw = $('#id_password');
     let btn = $('#btn');
 
     $(btn).on('click', function() {

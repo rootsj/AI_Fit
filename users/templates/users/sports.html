@@ -4,15 +4,28 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-<!-- Bootstrap CSS -->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/earlyaccess/notosanskr.css">
 <title>AI Fitness Trainer</title>
+<link rel="stylesheet" href="/static/css/base.css">
 <link rel="stylesheet" href="/static/css/sports.css">
 
+<!-- body start -->
+<div class="body"> 
 
-<body>
+<div class="section" id="above">
+    <div>Teachable Machine Pose Model</div> 
+    <div><canvas id="canvas"></canvas></div>
+    <div id="label-container"></div>
+    
+    <div class="btn" id="end_btn">
+        <div class="btn__content" id="end" onclick="sendCountEnd()">
+            End_
+        </div>
+        <span class="btn__label">A.I.fit</span>
+        <span class="btn__glitch"></span>
+    </div>
+</div>
+
+<div class="section" id="below">
     <div class="container mt-5">
         <div class="frame">
             <div class="center">
@@ -31,11 +44,9 @@
                 </div>
             </div>
         </div>
+</div>
+</div><!-- body div end -->
 
-    <div>Teachable Machine Pose Model</div> 
-<div><canvas id="canvas"></canvas></div>
-<div id="label-container"></div>
-<button type="button" id="end" onclick="sendCountEnd()">End</button>
 
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/pose@0.8/dist/teachablemachine-pose.min.js"></script>
@@ -67,7 +78,7 @@
         maxPredictions = model.getTotalClasses();
 
         // Convenience function to setup a webcam
-        const size = 600; // 절대 크기 => 상대 크기로 변경해야 반응형 웹 구현 가능
+        let size = 600; // 절대 크기 => 상대 크기로 변경해야 반응형 웹 구현 가능
         const flip = true; // whether to flip the webcam
         webcam = new tmPose.Webcam(size, size, flip); // width, height, flip
         await webcam.setup(); // request access to the webcam
