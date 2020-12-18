@@ -1,0 +1,114 @@
+<label for="email">가입하신 이메일:</label>
+<input type="text" id="email" name="email">&nbsp;
+<button type="button" id="emailBtn" onclick="requestCode();">인증 코드 요청</button>&nbsp;
+<span id="status"></span><br>
+
+<label for="code">인증 코드:</label>
+<input type="text" id="code" name="code">&nbsp;
+<button type="button" id="codeBtn" onclick="checkCode();">코드 확인</button>&nbsp;
+<span id="restTime"></span><br>
+
+<form method="POST" action="{% url 'users:forgotpw' %}" onsubmit="return submitCheck();" enctype="multipart/form-data">
+    {{ form.password1.label }}
+    {{ form.password1 }}<br>
+    {{ form.password2.label }}
+    {{ form.password2 }}<br>
+    <input type="submit" value="패스워드 변경">&nbsp;{{ error }}
+</form>
+
+<script>
+    let codeTimer;
+    let codeTime = 300;
+
+    let completeEmail = false;
+    let completeCode = false;
+
+    function requestCode() {
+        document.getElementById('status').innerHTML = "인증 코드 발송 중...";
+        fetch('/auth/forgotpw', {
+            method: 'POST',
+            body: 'request_code&' + document.getElementById('email').value
+        })
+        .then(e => {
+            e.text().then(e => {
+                if (e == 'OK_Code') {
+                    completeEmail = true;
+
+                    document.getElementById('email').readOnly = true;
+                    document.getElementById('email').style.background = "#EAEAEA";
+                    document.getElementById('emailBtn').style.display = "none";
+
+                    document.getElementById('status').innerHTML = "발송 완료!!";
+
+                    codeTimer = setInterval(() => {
+                        document.getElementById('restTime').innerHTML = "남은 시간 " + codeTime-- + "초";
+                        if (codeTime < 0) {
+                            clearInterval(codeTimer);
+                        }
+                    }, 1000);
+
+                } else if (e == 'Fail_Code') {
+                    alert("가입되어 있지 않은 email입니다.");
+                    document.getElementById('status').innerHTML = "가입되어 있지 않은 email입니다.";
+                }
+            })
+        })
+        .catch(e => console.error(e));
+    }
+
+    let pwForm;
+    function checkCode() {
+        if (completeEmail == false) {
+            alert("먼저 이메일 코드 발급을 진행해 주세요.");
+            return;
+        } else if (codeTime < 0) {
+            alert("코드의 유효시간이 끝났습니다. email을 통해 코드를 다시 발급받아 주세요.");
+            return;
+        }
+
+        fetch('/auth/forgotpw', {
+            method: 'POST',
+            body: 'request_auth&' + document.getElementById('code').value
+        })
+        .then(e => {
+            e.text().then(e => {
+                if (e == 'OK_Code') {
+                    completeCode = true;
+
+                    document.getElementById('code').readOnly = true;
+                    document.getElementById('code').style.background = "#EAEAEA";
+                    document.getElementById('codeBtn').style.display = "none";
+
+                    document.getElementById('restTime').innerHTML = "인증 완료!!";
+                    clearInterval(codeTimer);
+                } else if (e == 'Fail_Code') {
+                    alert("유효한 코드가 아닙니다.");
+                }
+            })
+        })
+        .catch(e => console.error(e));
+    }
+
+    if ({{auth}}) {
+        document.getElementById('status').innerHTML = "발송 완료!!";
+        document.getElementById('restTime').innerHTML = "인증 완료!!";
+
+        document.getElementById('email').value = "{{ email }}"
+        document.getElementById('email').readOnly = true;
+        document.getElementById('email').style.background = "#EAEAEA";
+        document.getElementById('emailBtn').style.display = "none";
+
+        document.getElementById('code').value = "{{ code }}"
+        document.getElementById('code').readOnly = true;
+        document.getElementById('code').style.background = "#EAEAEA";
+        document.getElementById('codeBtn').style.display = "none";
+    }
+
+    function submitCheck() {
+        if (({{auth}} || (completeEmail && completeCode)) == false) {
+            alert("먼저 인증 절차를 진행해주세요.");
+            return false;
+        }
+        return true;
+    }
+</script>

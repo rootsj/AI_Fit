@@ -2,15 +2,17 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
 
-from .forms import LoginForm, SignupForm, EditForm
+from .forms import LoginForm, SignupForm, EditForm, ChangePwForm
 from .models import User, DailyRecord
 
 import base64
 from django.core.files.base import ContentFile
-from django.contrib.auth.hashers import check_password
 # 장고에서 제공해주는 비밀번호 검증 메소드
+from django.contrib.auth.hashers import check_password
 
 from datetime import datetime
+
+from . import auth_code
 
 
 # Create your views here.
@@ -69,6 +71,65 @@ def face_login_view(request):
 def logout_view(request):
     logout(request)
     return redirect("users:login")
+
+
+@csrf_exempt
+def forgotpw_view(request):
+    context = {'auth': 0}
+
+    if request.method == 'POST':
+        print(request.body.decode('utf-8'))
+        contents = request.body.decode('utf-8').split('&')
+
+        if contents[0] == 'request_code':
+            try:
+                user = User.objects.get(email=contents[1])
+            except User.DoesNotExist:
+                return HttpResponse("Fail_Code")
+            else:
+                request.session['code'] = auth_code.make_code()
+                auth_code.send_code('floodfilllinkedlist@gmail.com', 'zssbjrhlobebrvrq', contents[1], request.session['code'])
+                request.session['email'] = contents[1]
+                request.session['auth'] = 0
+                return HttpResponse("OK_Code")
+
+        elif contents[0] == 'request_auth':
+            if request.session['code'] == contents[1]:
+                request.session['auth'] = 1
+                return HttpResponse("OK_Code")
+            else:
+                return HttpResponse("Fail_Code")
+
+        else:
+            form = ChangePwForm(request.POST)
+            password1 = request.POST['password1']
+            password2 = request.POST['password2']
+            if password1 == password2:
+                user = User.objects.get(email=request.session['email'])
+                user.set_password(password1)
+                user.save()
+
+                user = authenticate(email=request.session['email'], password=password1)
+                login(request, user)
+
+                del request.session['auth']
+                del request.session['email']
+                del request.session['code']
+
+                return redirect("users:login")
+
+            else:
+                context['form'] = form
+                context['error'] = "Password와 Password확인란이 일치하지 않습니다."
+                context['email'] = request.session['email']
+                context['code'] = request.session['code']
+                context['auth'] = request.session['auth']
+
+                return render(request, "users/forgotpw.html", context)
+    else:
+        context['form'] = ChangePwForm()
+
+    return render(request, "users/forgotpw.html", context)
 
 
 def signup_view(request):
