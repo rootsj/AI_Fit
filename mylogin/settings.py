@@ -28,7 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     ".ap-northeast-2.compute.amazonaws.com",
-    ".okeydokey.pe.kr",
+    ".ai-fit.co.kr",
     "127.0.0.1",
     "localhost",
 ]
