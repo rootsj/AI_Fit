@@ -1,20 +1,47 @@
-<label for="email">가입하신 이메일:</label>
-<input type="text" id="email" name="email">&nbsp;
-<button type="button" id="emailBtn" onclick="requestCode();">인증 코드 요청</button>&nbsp;
-<span id="status"></span><br>
+<link rel="stylesheet" href="/static/css/base.css">
+<link rel="stylesheet" href="/static/css/login.css">
+<link rel="stylesheet" href="/static/css/forgotpw.css">
+<script src="/static/js/jquery-3.5.1.min.js"></script>
 
-<label for="code">인증 코드:</label>
-<input type="text" id="code" name="code">&nbsp;
-<button type="button" id="codeBtn" onclick="checkCode();">코드 확인</button>&nbsp;
-<span id="restTime"></span><br>
 
-<form method="POST" action="{% url 'users:forgotpw' %}" onsubmit="return submitCheck();" enctype="multipart/form-data">
-    {{ form.password1.label }}
-    {{ form.password1 }}<br>
-    {{ form.password2.label }}
-    {{ form.password2 }}<br>
-    <input type="submit" value="패스워드 변경">&nbsp;{{ error }}
-</form>
+<div class="login_body">
+
+<section class="login-form" id="forgotpw_form">
+    <div class="int-area">
+        <input type="text" id="email" name="email" required>
+        <label for="email">가입하신 이메일</label>
+    </div>
+    <div class="btn-area">
+        <button type="button" id="emailBtn" onclick="requestCode();">인증 코드 요청</button>
+        <span id="status"></span>
+    </div>
+
+    <div class="int-area">
+        <input type="text" id="code" name="code" required>
+        <label for="code">인증 코드</label>
+    </div>
+    <div class="btn-area">
+        <button type="button" id="codeBtn" onclick="checkCode();">코드 확인</button>
+        <span id="restTime"></span>
+    </div>
+
+    <form method="POST" action="{% url 'users:forgotpw' %}" onsubmit="return submitCheck();" enctype="multipart/form-data" required>
+        <div class="int-area">
+            {{ form.password1 }}
+            <label for="email">변경할 비밀번호</label>
+        </div>
+        <div class="int-area">
+            {{ form.password2 }}
+            <label for="code">비밀번호 확인</label>
+        </div>
+        <div class="btn-area">
+            <button type="submit">패스워드 변경</button>
+        </div>
+        <span id="errorMsg">{{ error }}</span>
+    </form>
+</section>
+
+</div>
 
 <script>
     let codeTimer;
@@ -48,7 +75,6 @@
                     }, 1000);
 
                 } else if (e == 'Fail_Code') {
-                    alert("가입되어 있지 않은 email입니다.");
                     document.getElementById('status').innerHTML = "가입되어 있지 않은 email입니다.";
                 }
             })
@@ -111,4 +137,26 @@
         }
         return true;
     }
+</script>
+
+
+<script>
+    let id = $('#email');
+    let pw = $('#code');
+    let btn = $('#emailBtn');
+
+    $(btn).on('click', function() {
+        if($(id).val() == "") {
+            $(id).next('label').addClass('warning');
+            setTimeout(function() {
+                $('label').removeClass('warning');
+            }, 1500)
+        }
+        else if($(pw).val() == "") {
+            $(pw).next('label').addClass('warning');
+            setTimeout(function() {
+                $('label').removeClass('warning');
+            }, 1500)
+        }
+    })
 </script>

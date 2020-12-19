@@ -1,0 +1,22 @@
+#status, #restTime, #errorMsg{
+    font-size: 2vh;
+    color: #f2f2f2;
+}
+
+#emailBtn, #codeBtn{
+    margin-bottom: 3%;
+}
+
+
+
+@media (orientation: portrait) {
+    /* 세로 모드일 때 적용할 CSS */
+    #forgotpw_form {
+        width: 80%;
+    }
+
+@media (orientation: landscape) {
+    /* 가로 모드일 때 적용할 CSS */
+    #forgotpw_form {
+        width: 32%;
+    }

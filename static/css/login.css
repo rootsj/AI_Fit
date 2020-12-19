@@ -21,7 +21,8 @@
 .login-form{
     position: relative;  z-index: 2;
     background-color: rgba(0,0,0,.5);
-    margin-top: -5%;
+    padding: 5vh;
+    border-radius: 2vh;
     margin-bottom: 5%;
 }
 
@@ -34,7 +35,7 @@
 .int-area{
     max-width: 400px;
     position: relative;
-    margin-top: 3%;
+    margin-top: 5%;
 }
 .int-area:first-child{
     margin-top: 0;
