@@ -249,12 +249,43 @@
                 datasets: [{
                     label: '운동 횟수',
                     data: workout_count,
-                    backgroundColor: 'rgba(34, 116, 28, 0.2)',
-                    borderColor: 'rgba(196, 183, 59, 1)',
+                    backgroundColor: 'rgba(196, 183, 59, 1)',
+                    borderColor: 'rgba(255, 255, 255, 0.8)',
                     borderWidth: 2
                 }]
             },
-            options: {}
+            options: {
+                legend: {
+                    labels: {
+                        fontColor: "rgba(255, 255, 255, 1)",
+                        fontSize: 18
+                    }
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            stepSize : 2,
+                            fontColor : "rgba(255, 255, 255, 1)",
+                            fontSize : 14,
+                        },
+                        gridLines:{
+                            color: 'rgba(255, 255, 255, 0.7)',
+                            lineWidth:2
+                        }
+                    }],
+                    xAxes: [{
+                        ticks:{
+                            fontColor : 'rgba(255, 255, 255, 1)',
+                            fontSize : 12
+                        },
+                        gridLines:{
+                            color: "rgba(255, 255, 255, 0.7)",
+                            lineWidth: 1
+                        }
+                    }]
+                }
+            }
         });
     }
 
