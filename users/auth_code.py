@@ -39,9 +39,14 @@ def send_code(email_from, email_password, email_to, code):
 
     # 보내기
     text = msg.as_string()
-    server = smtplib.SMTP('smtp.gmail.com', 587)
-    server.starttls()
-    server.login(email_from, email_password)
-
-    server.sendmail(email_from, email_to, text)
-    server.quit()
+    try:
+        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server.starttls()
+        server.login(email_from, email_password)
+        server.sendmail(email_from, email_to, text)
+    except:
+        return False
+    else:
+        return True
+    finally:
+        server.quit()

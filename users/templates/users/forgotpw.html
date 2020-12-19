@@ -58,7 +58,7 @@
         })
         .then(e => {
             e.text().then(e => {
-                if (e == 'OK_Code') {
+                if (e == 'OK_Email') {
                     completeEmail = true;
 
                     document.getElementById('email').readOnly = true;
@@ -74,8 +74,10 @@
                         }
                     }, 1000);
 
-                } else if (e == 'Fail_Code') {
+                } else if (e == 'Fail_User') {
                     document.getElementById('status').innerHTML = "가입되어 있지 않은 email입니다.";
+                } else if (e == 'Fail_Email') {
+                    document.getElementById('status').innerHTML = "email 발송 실패!";
                 }
             })
         })

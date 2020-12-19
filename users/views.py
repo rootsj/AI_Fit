@@ -78,20 +78,20 @@ def forgotpw_view(request):
     context = {'auth': 0}
 
     if request.method == 'POST':
-        print(request.body.decode('utf-8'))
         contents = request.body.decode('utf-8').split('&')
 
         if contents[0] == 'request_code':
             try:
                 user = User.objects.get(email=contents[1])
             except User.DoesNotExist:
-                return HttpResponse("Fail_Code")
+                return HttpResponse("Fail_User")
             else:
                 request.session['code'] = auth_code.make_code()
-                auth_code.send_code('floodfilllinkedlist@gmail.com', 'zssbjrhlobebrvrq', contents[1], request.session['code'])
+                if not auth_code.send_code('floodfilllinkedlist@gmail.com', 'zssbjrhlobebrvrq', contents[1], request.session['code']):
+                    return HttpResponse("Fail_Email")
                 request.session['email'] = contents[1]
                 request.session['auth'] = 0
-                return HttpResponse("OK_Code")
+                return HttpResponse("OK_Email")
 
         elif contents[0] == 'request_auth':
             if request.session['code'] == contents[1]:
