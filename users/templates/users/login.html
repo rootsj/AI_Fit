@@ -1,13 +1,27 @@
-{% load static %}
-<link rel="stylesheet" href="/static/css/base.css">
-<link rel="stylesheet" href="/static/css/button.css">
-<link rel="stylesheet" href="/static/css/login.css">
-<link rel="stylesheet" href="/static/css/mypage.css">
-<script src="/static/js/jquery-3.5.1.min.js"></script>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Mypage</title>
+
+    {% load static %}
+    <link rel="stylesheet" href="/static/css/base.css">
+    <link rel="stylesheet" href="/static/css/button.css">
+    <link rel="stylesheet" href="/static/css/user.css">
+    <link rel="stylesheet" href="/static/css/login.css">
+    <link rel="stylesheet" href="/static/css/toparea.css">
+    <link rel="stylesheet" href="/static/css/mypage.css">
+
+    <script src="/static/js/jquery-3.5.1.min.js"></script>
+</head>
+
+
+<body>
 
 {% if user.is_authenticated %}
 
-<div class="top">
+<header class="top">
     <div class="profile_box">
         {% if user.profile_img %} 
         <img class="profile_image" src="{{ user.profile_img.url }}" alt="프로필사진">
@@ -23,16 +37,15 @@
             </div>
         </div>
     </div>
-    <!-- <span class="top__label">A.I.fit</span> -->
-</div>
+</header>
 
-<!-- 전체 -->
-<div class="body">
+<main> 
+
+<div class="top_line"></div>
+<div class="interlock"><!-- 가로세로 연동 -->
 
 <!-- 동영상, 영상 선택 단 -->
-<div class="section" id="above">
-
-    <div class="upper_padding"></div>
+<section class="above">
     <!-- SelectBox Button -->
     <div class="selectbox">
         <label for="workouts">select workout_</label>
@@ -41,20 +54,18 @@
             <option value="dumbell_curl">DUMBELLCURL_</option>
         </select>
     </div>
-    <br><br>
 
     <!-- 동영상 -->
     <div class="video_wrap">
         <div class="video_frame">
-            <video class=video src="{% static 'video/squat.mp4' %}" autoplay loop id="squatVideo"></video>
-            <video class=video src="{% static 'video/dumbell_curl.mp4' %}" autoplay loop id="dumbellCurlVideo" style="display: none;"></video>
-            <br><br>
+            <video src="{% static 'video/squat.mp4' %}" autoplay loop id="squatVideo"></video>
+            <video src="{% static 'video/dumbell_curl.mp4' %}" autoplay loop id="dumbellCurlVideo" style="display: none;"></video>
         </div>
         <div class="text_frame" id="squatText">
-            <p class="text_sport">SQUAT</p>
+            <p>SQUAT</p>
         </div>
         <div class="text_frame" id="dumbellCurlText" style="display: none;">
-            <p class="text_sport">DUMBELL CURL</p>
+            <p>DUMBELL CURL</p>
         </div>
     </div>
 
@@ -80,12 +91,12 @@
             </div>
         </div>
     </div>
+</section>
 
-</div>
-
+<hr>
 
 <!-- 기간, 그래프단 -->
-<div class="section" id="below">
+<section class="below">
 
     <!-- Radio Button -->
     <div class="radio_btns">
@@ -96,18 +107,71 @@
         <label for="halfMonth">15일</label>
         <input type="radio" id="month" name="term" value="month">
         <label for="month">30일</label>
-        <br><br>
     </div>
 
     <!-- 그래프 처리 -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
     <div class="graph_frame">
-        <canvas id="myChart" width="6" height="4"></canvas>
+        <canvas id="myChart" width="7" height="4"></canvas>
     </div>
+</section>
+</div>  
 
-</div>
+</main>
 
-</div>  <!-- body end-->
+{% else %}
+
+<main class="user_body">
+    <section class="user_form">
+        <h1>A.I.FIT</h1>
+        <form action="" method="POST">
+            {% csrf_token %}
+            <div class="int-area">
+                {{ form.email }}
+                <label for="id_email">USER NAME</label>
+            </div>
+            <br>
+            <div class="int-area">
+                {{ form.password }}
+                <label for="id_password">PASSWORD</label>
+            </div>
+            <div class="btn-area">
+                <button id="btn_login_form" type="submit" value="로그인">LOGIN</button>
+            </div>
+        </form>
+        <div class="process">
+            <a href="{% url 'users:forgotpw' %}">Forgot Password?</a>
+            <a href="{% url 'users:face_login' %}">Face Login</a>
+            <a href="{% url 'users:signup' %}">회원가입</a>
+        </div>
+    </section>
+</main>
+
+{% endif %}
+
+</body>
+
+<!-- login page script -->
+<script> 
+    let id = $('#id_email');
+    let pw = $('#id_password');
+    let btn = $('#btn_login_form');
+
+    $(btn).on('click', function() {
+        if($(id).val() == "") {
+            $(id).next('label').addClass('warning');
+            setTimeout(function() {
+                $('label').removeClass('warning');
+            }, 1500)
+        }
+        else if($(pw).val() == "") {
+            $(pw).next('label').addClass('warning');
+            setTimeout(function() {
+                $('label').removeClass('warning');
+            }, 1500)
+        }
+    })
+</script>
 
 <!-- 동영상, 영상 선택 단 -->
 <script>
@@ -310,56 +374,3 @@
     //처음 이 페이지가 로드될 때 아직 이벤트가 발생하지 않았더라도 Chart를 한번 그려준다.
     resetChart();
 </script>
-
-{% else %}
-
-<div class="login_body">
-
-<section class="login-form">
-    <h1>A.I.FIT</h1>
-    <form action="" method="POST">
-        {% csrf_token %}
-        <div class="int-area">
-            {{ form.email }}
-            <label for="id_email">USER NAME</label>
-        </div>
-        <div class="int-area">
-            {{ form.password }}
-            <label for="id_password">PASSWORD</label>
-        </div>
-        <div class="btn-area">
-            <button id="btn_login_form" type="submit" value="로그인">LOGIN</button>
-        </div>
-    </form>
-    <div class="caption">
-        <div class="process">
-            <a href="{% url 'users:forgotpw' %}">Forgot Password?</a><br>
-            <a href="{% url 'users:face_login' %}">Face Login</a>
-            <a href="{% url 'users:signup' %}">회원가입</a>
-        </div>
-    </div>
-</section>
-</div>
-
-<script>
-    let id = $('#id_email');
-    let pw = $('#id_password');
-    let btn = $('#btn_login_form');
-
-    $(btn).on('click', function() {
-        if($(id).val() == "") {
-            $(id).next('label').addClass('warning');
-            setTimeout(function() {
-                $('label').removeClass('warning');
-            }, 1500)
-        }
-        else if($(pw).val() == "") {
-            $(pw).next('label').addClass('warning');
-            setTimeout(function() {
-                $('label').removeClass('warning');
-            }, 1500)
-        }
-    })
-</script>
-
-{% endif %}

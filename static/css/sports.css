@@ -1,12 +1,26 @@
-body {
-	font: 24px/30px 'Noto Sans CJK KR', Noto Sans KR, sans-serif;
-	background: url("/static/image/kettle_bell.jpg")no-repeat center;
+body{
+    /* background-color: rgba(0, 0, 0.2, 0.9); */
+    /* background: url("/static/image/kettle_bell.jpg")no-repeat center; */
+	background-color: black;
 	background-size: cover;
-	height: 100vh;
-	z-index: -10;
+    height: 100vh;
+	font-family: Tomorrow, sans-serif;
+    z-index: -10;
 }
 
-.top {
+#top {
+    background-color: var(--blue-color);
+}
+#welcome {
+    color: var(--blue-color);
+}
+#setting_box{
+    height: 53%;
+    width: 100%;
+    background-color: var(--blue-color);
+}
+
+.top_line {
 	width: 86%;
 	height: 1%;
 	background-color: var(--blue-color);
@@ -15,12 +29,25 @@ body {
 }
 
 .title{
-	font-size: 5vh;
+	font-size: 3vh;
 	font-family: Tomorrow, sans-serif;
-	font-weight: 600;
+	font-weight: 500;
 	text-transform: uppercase;
 	color: var(--blue-color);
-	margin-bottom: 5%;
+	margin-bottom: 1%;
+}
+
+@media (orientation: portrait) {
+    /* 세로 모드일 때 적용할 CSS */
+    .above, .below {
+        height: 50%;
+    }
+}
+@media (orientation: landscape) {
+    /* 가로 모드일 때 적용할 CSS */
+    .above, .below {
+        width: 50%;
+    }
 }
 
 #canvas {
@@ -28,6 +55,10 @@ body {
 	border: var(--blue-color);
 	border-spacing: 3vh;
 	border-radius: 3vh;
+}
+
+#label-container{
+	color: var(--blue-color);
 }
 
 .frame {
@@ -70,9 +101,9 @@ body {
  
 .circle-big {
 	 position: relative;
-	 width: 114px;
-	 height: 114px;
-	 margin: 30px auto 25px auto;
+	 vertical-align: center;
+	 text-align: center;
+	 margin: 3vh;
 }
  
 .circle-big svg {
@@ -163,7 +194,7 @@ body {
 	 position: absolute;
 	 width: 100%;
 	 top: 26px;
-	 font-size: 17px;
+	 font-size: 3vmin;
 	 text-align: center;
 	 font-weight: 400;
 	 line-height: 16px;

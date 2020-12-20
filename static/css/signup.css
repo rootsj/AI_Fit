@@ -1,13 +1,83 @@
-body{
-    background-color: #d7d7d8;
+.user_body{
+    background: url("/static/image/bodybuilding.jpg") no-repeat center;
+    width: 100vw;
+    height: 100vh;
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
-#mainimg {
-    height: 200px;
+@media (orientation: portrait) {
+    /* 세로 모드일 때 적용할 CSS */
+    .above, .below {
+        height: 50%;
+    }
+    #int-area input{
+        font-size: 2.5vh;
+    }
+    
+    #int-area label{
+        font-size: 2.5vh;
+    }
+    #btn-area {
+        margin-top: 0%;
+        margin-bottom: 5%;
+        text-align: center;
+    }
+    #btn-area button {
+        height: 5vh;
+        width: 30vh;
+        font-size: 2vh;
+        background: #166cea;
+        color: #fff;
+        border: none;
+        border-radius: 20px;
+        cursor:pointer;
+    }
 }
 
-#camera{
-    width: 320px;
-    height: 240px;
+@media (orientation: landscape) {
+    /* 가로 모드일 때 적용할 CSS */
+    .above, .below {
+        width: 40vw;
+        height: 100%;
+    }
+    #camera_frame{
+        display: flex;
+    }
+    #btn-area {
+        margin-top: 0%;
+        margin-bottom: 5%;
+        text-align: center;
+    }
+}
+
+.above h1 {
+    color: var(--white-color);
+}
+
+#camera, #results{
+    width: 48vmin;
+    height: 36vmin;   
+    border-radius: 3vh;
+    overflow: hidden;
     border: 1px solid black;
 }
+.int-area p {
+    font-size: 2.5vmin;
+    padding: 0.8vmin;
+    color: #999;
+}
+.int-area select {
+    font-size: 2vmin;
+    color: var(--white-color);
+    width: 12vmin;
+    margin-bottom: 2vmin;
+    background-color: transparent;
+}
+
+.btn-area p {
+    color: var(--white-color);
+}
+
+.btn-area a:link { color: white; text-decoration: none; }
+.btn-area a:visited { color: white; text-decoration: none;}

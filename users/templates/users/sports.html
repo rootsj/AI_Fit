@@ -1,34 +1,46 @@
 <!DOCTYPE html>
 <html lang="ko">
-
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
 <title>AI Fitness Trainer</title>
 <link rel="stylesheet" href="/static/css/base.css">
 <link rel="stylesheet" href="/static/css/button.css">
+<link rel="stylesheet" href="/static/css/toparea.css">
 <link rel="stylesheet" href="/static/css/sports.css">
+</head>
 
 <!-- body start -->
 <body>
-<div class="top"></div>
-<div class="body"> 
 
-<div class="section" id="above">
+<header class="top" id="top">
+    <div class="profile_box" id="profile_box">
+        {% if user.profile_img %} 
+        <img class="profile_image" src="{{ user.profile_img.url }}" alt="프로필사진">
+        {% endif %}
+    </div>
+    <div class="welcome" id="welcome">
+        <div class="user">{{ user.nick_name }}_</div>
+    </div>
+    <div class="rightside" id="rightside"> 
+        <div class="setting_box" id="setting_box"></div>
+    </div>
+</header>
+
+<main>
+
+<div class="top_line"></div>
+<div class="interlock">
+<section class="above">
     <div class="title">{{ what_kind }} start</div> 
     <div><canvas id="canvas"></canvas></div>
     <div id="label-container"></div>
-    
-    <div class="btn" id="end_btn">
-        <div class="btn__content" id="end" onclick="sendCountEnd()">
-            End_
-        </div>
-        <span class="btn__label" id="btn_end__label">A.I.FIT</span>
-        <span id="btn_end__glitch"></span>
-    </div>
-</div>
+</section>
 
-<div class="section" id="below">
+<hr>
+
+<section class="below">
     <div class="frame">
         <div class="center">
             <div class="headline">
@@ -46,10 +58,18 @@
             </div>
         </div>
     </div>
+    <div class="btn" id="end_btn">
+        <div class="btn__content" id="end" onclick="sendCountEnd()">
+            End_
+        </div>
+        <span class="btn__label" id="btn_end__label">A.I.FIT</span>
+        <span id="btn_end__glitch"></span>
+    </div>
+</section>
 </div>
-</div>
+</main>
 </body>
-<!-- body end -->
+</html>
 
 
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
@@ -128,6 +148,3 @@
         }
     }
 </script>
-
-</body>
-</html>

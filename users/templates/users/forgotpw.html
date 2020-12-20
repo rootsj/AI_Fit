@@ -1,35 +1,46 @@
-<link rel="stylesheet" href="/static/css/base.css">
-<link rel="stylesheet" href="/static/css/login.css">
-<link rel="stylesheet" href="/static/css/forgotpw.css">
-<script src="/static/js/jquery-3.5.1.min.js"></script>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>forgotpw</title>
+    <link rel="stylesheet" href="/static/css/base.css">
+    <link rel="stylesheet" href="/static/css/user.css">
+    <link rel="stylesheet" href="/static/css/forgotpw.css">
+    <script src="/static/js/jquery-3.5.1.min.js"></script>
+</head>
 
+<main class="user_body">
 
-<div class="login_body">
+<section class="user_form">
+    <form>
+        <div class="int-area">
+            <input type="text" id="email" name="email" required>
+            <label for="email">가입하신 이메일</label>
+        </div>
+        <div class="btn-area">
+            <button type="button" id="emailBtn" onclick="requestCode();">인증 코드 요청</button>
+            <span id="status"></span>
+        </div>
+    </form>
 
-<section class="login-form" id="forgotpw_form">
-    <div class="int-area">
-        <input type="text" id="email" name="email" required>
-        <label for="email">가입하신 이메일</label>
-    </div>
-    <div class="btn-area">
-        <button type="button" id="emailBtn" onclick="requestCode();">인증 코드 요청</button>
-        <span id="status"></span>
-    </div>
-
-    <div class="int-area">
-        <input type="text" id="code" name="code" required>
-        <label for="code">인증 코드</label>
-    </div>
-    <div class="btn-area">
-        <button type="button" id="codeBtn" onclick="checkCode();">코드 확인</button>
-        <span id="restTime"></span>
-    </div>
+    <form>
+        <div class="int-area">
+            <input type="text" id="code" name="code" required>
+            <label for="code">인증 코드</label>
+        </div>
+        <div class="btn-area">
+            <button type="button" id="codeBtn" onclick="checkCode();">코드 확인</button>
+            <span id="restTime"></span>
+        </div>
+    </form>
 
     <form method="POST" action="{% url 'users:forgotpw' %}" onsubmit="return submitCheck();" enctype="multipart/form-data" required>
         <div class="int-area">
             {{ form.password1 }}
             <label for="email">변경할 비밀번호</label>
         </div>
+        <br>
         <div class="int-area">
             {{ form.password2 }}
             <label for="code">비밀번호 확인</label>
@@ -41,7 +52,7 @@
     </form>
 </section>
 
-</div>
+</main>
 
 <script>
     let codeTimer;

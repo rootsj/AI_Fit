@@ -1,23 +1,81 @@
-<link rel="stylesheet" href="/static/css/signup.css">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {% load static %}
+    <link rel="stylesheet" href="/static/css/base.css">
+    <link rel="stylesheet" href="/static/css/user.css">
+    <link rel="stylesheet" href="/static/css/signup.css">
+</head>
 
-{% load static %}
-<link rel="stylesheet" href="{% static 'css/signup.css' %}">
-회원가입 페이지<br>
-<img src="{% static 'image/1.jpg' %}" id="mainimg" alt=""><br>
+<body>
 
-<div id="camera"></div><br>
-<button onclick="take_snapshot();">프로필사진 촬영</button>
-※ 프로필사진은 얼굴인식 로그인 기능으로도 활용됩니다.<br><br>
+<main class="user_body">
+<div class="top_line"></div>
+<div class="interlock" id="signup_body">
+<section class="above">
+    
+    <h1>정면으로 웹캠을 응시해주세요</h1> 
 
-<div id="results"></div><br>
+    <div class="camera_frame">
+        <div id="camera"></div>
+        <div id="results"></div>
+    </div>
+
+    <div class="btn-area" id="btn-area">
+        <button onclick="take_snapshot();">프로필사진 촬영</button>
+        <p>※ 프로필사진은 얼굴인식 로그인 기능으로도 활용됩니다.</p>
+    </div>
+
+</section>
+
+
+<section class="below">
+    <form class="user_form" action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="int-area" id="int-area">
+            {{ form.email }}
+            <label>Email</label>
+        </div>
+        <div class="int-area" id="int-area">
+            {{ form.password1 }}
+            <label>Password</label>
+        </div>
+        <div class="int-area" id="int-area">
+            {{ form.password2 }}
+            <label>Password Check</label>
+        </div> 
+        <div class="int-area" id="int-area">
+            {{ form.nick_name }}
+            <label>Nickname</label>
+        </div>
+        <div class="int-area" id="int-area">
+            <p> Date of Birth </p>
+            {{ form.date_of_birth }}
+        </div>
+
+        <div class="btn-area" id="btn-area">
+            <input name="profile_img" id="profile_img" type="hidden" value="">
+            <button type="submit">회원가입</button>
+            <a href="{% url 'users:login' %}">로그인 페이지로 돌아가기</a>
+        </div>
+    </form>
+</section>
+</div>
+
+</div>
+
+</main>
+</body>
+</html>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.js"></script>
 <script>
     Webcam.set({
-        width: 320,
-        height: 240,
         image_format: 'jpeg',
-        jpeg_quality: 90
+        jpeg_quality: 90,
     });
     Webcam.attach("#camera");
     
@@ -28,23 +86,3 @@
         })
     }
 </script>
-
-<form action="" method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    * 표시 항목은 필수 작성<br>
-    <p> Email </p>
-    {{ form.email }}
-    <p> password </p>
-    <div class="input_container">
-        {{ form.password1 }}
-    </div>
-    {{ form.password2 }}
-    <p> 닉네임 </p>
-    {{ form.nick_name }}
-    <p> 생일 </p>
-    {{ form.date_of_birth }}
-
-    <input name="profile_img" id="profile_img" type="hidden" value="">
-    <input type="submit" value="회원가입">
-</form>
-<a href="{% url 'users:login' %}">[로그인 페이지]</a>

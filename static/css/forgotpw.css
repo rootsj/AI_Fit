@@ -1,22 +1,39 @@
+.user_body {
+    background: url("/static/image/bodybuilding.jpg") no-repeat center;
+    width: 100vw;
+    height: 100vh;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
 #status, #restTime, #errorMsg{
     font-size: 2vh;
-    color: #f2f2f2;
+    color: var(--white-color);
 }
 
 #emailBtn, #codeBtn{
     margin-bottom: 3%;
 }
 
-
-
 @media (orientation: portrait) {
     /* 세로 모드일 때 적용할 CSS */
-    #forgotpw_form {
+    .user_form {
         width: 80%;
     }
 
 @media (orientation: landscape) {
     /* 가로 모드일 때 적용할 CSS */
-    #forgotpw_form {
+    .user_form {
         width: 32%;
     }
+ 
+.int-area{
+    max-width: 400px;
+    margin-top: 5%;
+}
+.int-area input{
+    font-size: 3vh;
+}
+.int-area label {
+    font-size: 3vh;
+}

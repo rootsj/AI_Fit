@@ -1,0 +1,77 @@
+/* use in login, facelogin, signup, useredit */
+
+/* user squre */
+* {margin: 0; padding: 0; box-sizing: border-box;}
+
+.user_body{
+    font-family: 'Noto Sans KR', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.user_form{
+    position: relative;  
+    background-color: rgba(0,0,0,.8);
+    padding: 5vh;
+    border-radius: 2vh;
+}
+
+.int-area{
+    position: relative;
+}
+.int-area:first-child{
+    margin-top: 0;
+}
+.int-area input{
+    max-width: 400px;
+    margin-top: 5%;
+    width: 100%;
+    padding: 4% 2% 2%;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid #999;
+    font-size: 3vh;
+    color: #fff;
+    outline: none;
+}
+.int-area label {
+    position: absolute;
+    left: 2%;  top: 3%;
+    font-size: 3vh;
+    color: #999;
+    transition: all .5s ease;
+}
+.int-area label.warning {
+    color: var(--yellow-color) !important;
+    animation: warning .2s ease;
+    animation-iteration-count:2;
+}
+
+@keyframes warning {
+    0% {transform: translateX(-8px);}
+    25% {transform: translateX(8px);}
+    50% {transform: translateX(-8px);}
+    75% {transform: translateX(8px);}
+}
+.int-area input:focus + label,
+.int-area input:valid + label {
+    top:-2px;
+    font-size: 2vh;
+    color: #166cea;
+}
+
+.btn-area {
+    margin-top: 10%;
+    margin-bottom: 5%;
+}
+
+.btn-area button {
+    height: 5vh;
+    font-size: 2.5vh;
+    width: 100%;
+    background: #166cea;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    cursor:pointer;
+}
