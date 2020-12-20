@@ -14,6 +14,23 @@ from datetime import datetime
 
 from . import auth_code
 
+# model 관련 import
+import tensorflow as tf
+from numpy import load
+from numpy import asarray
+from mtcnn.mtcnn import MTCNN
+import time
+import csv
+import re
+from os import listdir
+import os
+
+from . import image_embedding # 얼굴을 128 벡터로
+from . import detect_face_from_one_image # 사진에서 얼굴 추출
+from . import anis_koubaa_lib
+from . import face_recognition
+
+# 여기까지
 
 # Create your views here.
 # 사용자가 F5를 눌러 새로고침을 해줄 수도 있을 텐데 계속 csrf때문에 페이지가 깨지고 뒤로 가더라도 그래프가 보이지 않아 다시 로그인을 해야하는 이슈가 있었다.
@@ -136,6 +153,7 @@ def signup_view(request):
     if request.method == 'POST':
         form = SignupForm(request.POST, request.FILES)
 
+
         if form.is_valid():
             email = form.cleaned_data['email']
             password1 = form.cleaned_data['password1']
@@ -149,12 +167,15 @@ def signup_view(request):
                 img_fmt, img_str = data.split(';base64,')
                 ext = img_fmt.split('/')[-1]
                 profile_img = ContentFile(base64.b64decode(img_str), name='profile.' + ext)
+                # face모델 불러이기 시간소요됨
+                model = tf.keras.models.load_model('static/model/face/facenet_keras.h5')
+                detector = MTCNN()
+                e_img = detect_face_from_one_image.extract_face(detector, profile_img)
+                representation = image_embedding.get_embedding(model, e_img)
 
             if password1 == password2:
                 if data != '':
-                    user = User.objects.create_user(email, password1, nick_name, date_of_birth, profile_img, 
-                    #representation
-                    )
+                    user = User.objects.create_user(email, password1, nick_name, date_of_birth, profile_img, representation)
                 else:
                     user = User.objects.create_user(email, password1, nick_name, date_of_birth)
                 return redirect("users:login")
