@@ -227,11 +227,28 @@ def user_edit(request):
         if form.is_valid():
             current_password = form.cleaned_data['current_password']
             user = request.user
+            data = request.POST['profile_img']
+
+            if data != '':
+                img_fmt, img_str = data.split(';base64,')
+                ext = img_fmt.split('/')[-1]
+                profile_img = ContentFile(base64.b64decode(img_str), name='profile.' + ext)
+                # face모델 불러이기 시간소요됨(4s)
+                model = tf.keras.models.load_model('static/model/face/facenet_keras.h5')
+                detector = MTCNN()
+                e_img = detect_face_from_one_image.extract_face(detector, profile_img)
+                representation = ' '.join(map(str,list(image_embedding.get_embedding(model, e_img))))
+                
             if check_password(current_password,user.password):
                 password1 = form.cleaned_data['password1']
                 password2 = form.cleaned_data['password2']
                 if password1 == password2:
                     user.set_password(password2)
+
+                    if data != '':
+                        user.profile_img = profile_img
+                        user.representation = representation
+
                     user.save()
                     login(request,user)
                     return redirect("users:login")
