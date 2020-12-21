@@ -33,7 +33,7 @@
             ready = false;
             sendFaceImage();
         }
-    }, 10);
+    }, 1000);
 
     Webcam.on('live', () => {
         ready = true;
@@ -43,7 +43,7 @@
         Webcam.snap(function (data) {
             fetch('/auth/facelogin', {
                 method: 'POST',
-                body: data
+                body: data,
             })
             .then(e => {
                 e.text().then(e => {
@@ -54,6 +54,7 @@
                     }
                     document.getElementById('results').innerHTML = '<img src="' + e + '"/>';
                     ready = true;
+                    return e;
                 })
                 .catch(e => {
                     {% comment %}
