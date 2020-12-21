@@ -1,14 +1,35 @@
-<style>
-    #camera{
-        width: 350;
-        height: 350;
-        border: 1px solid black;
-    }
-</style>
-{% load static %}
-<link rel="stylesheet" href="{% static 'signup.css' %}">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {% load static %}
+    <link rel="stylesheet" href="/static/css/base.css">
+    <link rel="stylesheet" href="/static/css/user.css">
+    <link rel="stylesheet" href="/static/css/signup.css">
+</head>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.js"></script>
+<body>
+
+<main class="user_body">
+<div class="top_line"></div>
+<div class="interlock" id="signup_body">
+<section class="above">
+
+    <h1>정면으로 웹캠을 응시해주세요</h1> 
+
+    <div class="camera_frame">
+        <div id="camera"></div>
+        <div id="results"></div>
+    </div>
+
+    <div class="btn-area" id="btn-area">
+        <button onclick="take_snapshot();">프로필사진 촬영</button>
+        <p>※ 프로필사진은 얼굴인식 로그인 기능으로도 활용됩니다.</p>
+    </div>
+
+</section>
 
 <div class="error_message">
     {{error}}
@@ -16,31 +37,38 @@
 <div class="login_title">
     Change Password
 </div>
-<div id="camera"></div>
-<button onclick="take_snapshot()">Take Snapshot</button>
-<div id="results"></div>
 
-<form method="POST" action="{% url 'users:useredit' %}" enctype="multipart/form-data">
-    {% csrf_token %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.js"></script>
 
-    <div class="username_form_text">current_password</div>
-    {{ form.current_password.label}}
-    {{ form.current_password}}
-    <div class="password_form_text"> New Password</div>
-    {{ form.password1 }}
-    <div class="confirm_password_form_text">Confirm Password</div>
-    {{ form.password2 }}
+<section class="below">
+    <form method="POST" action="{% url 'users:useredit' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        
 
-    <input name="profile_img" id="profile_img" type="hidden" value="">
+        <div class="int-area" id="int-area">
+           {{ form.current_password}}
+            <label>current password</label>
+        </div>
+        <div class="int-area" id="int-area">
+            {{ form.password1 }}
+            <label>Password</label>
+        </div>
+        <div class="int-area" id="int-area">
+            {{ form.password2 }}
+            <label>Password Check</label>
+        </div> 
 
-    <input type="submit" class="login_btn" value="회원정보 변경">
-</form>
+        <div class="btn-area" id="btn-area">
+            <input name="profile_img" id="profile_img" type="hidden" value="">
+            <button type="submit">회원정보 변경</button>
+            <a href="{% url 'users:login' %}">마이 페이지로 돌아가기</a>
+        </div>
+    </form>
+</section>
 
 <script>
     // Load all webcam
     Webcam.set({
-        width: 350,
-        height: 350,
         image_format: 'jpeg',
         jpeg_quality: 90
     })
