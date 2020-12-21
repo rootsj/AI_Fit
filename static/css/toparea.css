@@ -40,7 +40,7 @@
     height: 96%;
     width: 80%;
     margin-top: 2vh;
-    font-size: 5vh;
+    font-size: 5vmin;
     color: var(--yellow-color);
     background-color: var(--black-color);
     /* 우상꼭지점 우하꼭지점, */
@@ -58,20 +58,36 @@
     height: 100%;
     width: 15%;
     text-align: center;
+    vertical-align: bottom;
     background-color: var(--black-color);
 }
+
+.rightside a{
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 3vh;
+    padding-right: 3vw;
+    padding-top: 10vh;
+}
+
 .setting_box{
+    padding-right: 1vw;
     height: 53%;
     width: 100%;
+    text-transform: uppercase;
     background-color: var(--yellow-color);
 }
 
-.logout_btn{
+.infoedit_btn{
     padding-top: 2.5vh;
     padding-right: 1vw;
+    text-transform: uppercase;
     font-size: 2.5vh;
     font-family: font-family: Tomorrow, sans-serif;
 }
 
-.logout_btn a:link { color: black; text-decoration: none; }
-.logout_btn a:visited { color: black; text-decoration: none;}
+.rightside a:link { color: var(--yellow-color); text-decoration: none; }
+.rightside a:visited { color: var(--yellow-color); text-decoration: none;}
+
+.infoedit_btn a:link { color: black; text-decoration: none; }
+.infoedit_btn a:visited { color: black; text-decoration: none;}

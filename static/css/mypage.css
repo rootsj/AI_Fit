@@ -134,6 +134,11 @@ body{
     align-items: center;
 }
 
+.radio_btns{
+    font-size: 2vh;
+    color: var(--white-color);
+}
+
 .graph_frame{
     width: 70%;
     background-color: rgba(0, 0, 0, .5);
