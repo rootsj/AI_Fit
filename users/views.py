@@ -78,9 +78,11 @@ def face_login_view(request):
             # string형태로 저장된 값 [] 및 공백 제거
             temp = ','.join(i['representation'].split())[2:-1]
             # print(temp)
-
             # 쉽표 기준으로 나누어서 리스트화
-            temp2 = temp.split(',')
+            if temp[-1] == ',':
+                temp2 = temp[:-1].split(',')
+            else:
+                temp2 = temp.split(',')
             # string이기에 float형태로 변경
             temp2 = list(map(float, temp2))
             # temp2 = np.reshape(temp2,(1,128))
