@@ -45,7 +45,6 @@ def login_view(request):
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
             user = authenticate(email=email, password=password)
-
             if user is not None:
                 login(request, user)
                 latest_records = DailyRecord.objects.filter(user=user.id).order_by('-workout_date')[:30]
@@ -103,25 +102,16 @@ def face_login_view(request):
             profile_img = ContentFile(base64.b64decode(img_str[:-1]), name='profile.' + ext)
             e_img = detect_face_from_one_image.extract_face(detector, profile_img)
             face_to_predict_embedding = image_embedding.get_embedding(model, e_img)
-            print(face_to_predict_embedding)
             o_labels, class_probability = face_recognition.predict_label(face_to_predict_embedding, face_embeddings, labels, classifier)
-            print('00000000*************')
 
+            print(class_probability)
 
-            if (class_probability >= 46):
+            if (class_probability >= 55):
                 t_email = User.objects.get(id=o_labels).email
-                t_password = User.objects.get(id=o_labels).password
-                print(t_email)
-                print(t_password)
-                user = authenticate(email=t_email, password=t_password)
+                user = User.objects.get(email=t_email)
                 if user is not None:
                     login(request, user)
-                    print('*************')
-                    print(user)
                     return HttpResponse("OK_Face")
-
-                print('2222*************')
-                print(user)
 
                 form = LoginForm()
                 return render(request, "users/login.html", {'form': form})
