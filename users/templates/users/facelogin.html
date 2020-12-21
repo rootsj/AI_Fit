@@ -1,27 +1,33 @@
-<style>
-    #camera{
-        width: 320px;
-        height: 240px;
-        border: 1px solid black;
-    }
-</style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {% load static %}
+    <link rel="stylesheet" href="/static/css/base.css">
+    <link rel="stylesheet" href="/static/css/user.css">
+    <link rel="stylesheet" href="/static/css/signup.css">
+</head>
 
-클라이언트에서의 웹캠
-<div id="camera"></div>
-<br>
+<body>
 
-서버로 전송했다가 다시 되돌려 받은 이미지를 출력
-<div id="results"></div>
-<br>
-되돌려 받고나면 다시 사진 찍고 재전송<br>
-이런식으로 250장의 이미지를 주고받고 나면 blue라는 계정으로 자동로그인<br>
-임시로 이렇게 해놓은 것이고 나중엔 얼굴인식으로 자동로그인 구현 예정<br>
+<main class="user_body">
+<div class="top_line"></div>
+<div class="interlock" id="signup_body">
+<section class="above">
+
+    <h1>정면으로 웹캠을 응시해주세요</h1> 
+
+    <div class="camera_frame">
+        <div id="camera"></div>
+        <div id="results"></div>
+    </div>
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.js"></script>
 <script>
     Webcam.set({
-        width: 320,
-        height: 240,
         image_format: 'jpeg',
         jpeg_quality: 90
     });
@@ -57,14 +63,6 @@
                     return e;
                 })
                 .catch(e => {
-                    {% comment %}
-                        로컬에선 잘 돌아가는데 AWS에선
-                        net::ERR_HTTP2_PROTOCOL_ERROR 200
-                        TypeError: Failed to fetch
-                        이 에러가 뜬다.
-                        원인은 모르겠지만 무시하고 다시 한 번 강제로 페이지 이동을 시키면 해결되긴 한다.
-                        지금은 급하니 나중에 천천히 알아보자.
-                    {% endcomment %}
                     clearInterval(myTimer);
                     location.href = "{% url 'users:login' %}";
                 });
@@ -74,10 +72,14 @@
     }
 </script>
 
-<div id="results"></div>
-<br><br>
-<a href="javascript:idpwLogin();">ID/PW Login</a>&nbsp;&nbsp;
-<a href="javascript:signup();">회원가입</a>
+<div class="btn-area" id="btn-area">
+    <div>
+        <a href="javascript:idpwLogin();">로그인 페이지로 돌아가기</a>
+    </div>
+    <div>
+        <a href="javascript:signup();">회원가입 하러가기</a>
+    </div>
+</div>
 
 <script>
     function idpwLogin() {
