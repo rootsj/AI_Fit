@@ -25,6 +25,37 @@
 ---
 ## 🕵️‍♂️AI_Fit 소개
 
-### 🔎프로젝트 목적
+### 🔎 목적
 코로나19로 인해 비대면 시장은 급속도로 성장하고 있다. 앞으로 더 활성화 될 비대면 서비스에 최적화된 셀프 트레이닝 서비스를 제공하는 것이 목적이다.
+
+### 🔎 기대효과
+1. 운동시설을 방문하지 않아도 내 집에서 ‘AI_trainer’에게 관리 받을 수 있다.
+2. 시각적으로 운동 자세를 보여주고, 음성안내에 따라 운동 자세가 올바른 지 파악할 수 있다. 
+3. ‘AI_Fit' 음성을 통해 운동 횟수를 체크해주기 때문에 운동에 집중할 수 있다.
+![img1](https://user-images.githubusercontent.com/9804248/103353360-fd289f80-4aeb-11eb-8477-d2916d1d9fa1.png)
+
+### 🔎 Facial recognition
+- CNN을 활용한 얼굴 인식 딥러닝 모델 **FACENET**을 활용함
+- FACENET 문제점 : 아시아인을 대상으로 테스트 시, 인식률이 현저히 떨어지는 문제
+  - 해결1 : training dataset에 아시아인 샘플 수를 늘림
+  - 해결2 : classification layer 학습(KNeighborsClassification 모델)
+
+![image](https://user-images.githubusercontent.com/9804248/103354902-25b29880-4af0-11eb-9a68-21950a550b07.png)
+
+### 🔎 Facial recognition 웹페이지 동작 구조
+![image](https://user-images.githubusercontent.com/9804248/103354443-e768a980-4aee-11eb-961e-2eed1711cb41.png)
+
+### 🔎 Pose Estimation
+- Google **Teachable Machine** 서비스 중 Pose를 활용하여 포즈 인식 모델을 구현
+- Pose 인식 모델은 PoseNet과 pretrained weights 활용, javascript을 활용하여 웹서비스 구현
+
+### 🔎 Pose Estimation 웹페이지 동작 구조
+![image](https://user-images.githubusercontent.com/9804248/103355185-fe100000-4af0-11eb-9a5d-68fa1cbd34d8.png)
+
+---
+## 🕵️‍♂️AI_Fit 시연
+- Facial recognition
+![image](https://user-images.githubusercontent.com/9804248/103356513-63b1bb80-4af4-11eb-8e8a-941df29280bf.png)
+- Pose Estimation
+![img2](https://user-images.githubusercontent.com/9804248/103356865-31ed2480-4af5-11eb-9801-2a48e6737d96.png)
 
