@@ -58,4 +58,5 @@
 ![image](https://user-images.githubusercontent.com/9804248/103356513-63b1bb80-4af4-11eb-8e8a-941df29280bf.png)
 - Pose Estimation
 ![img2](https://user-images.githubusercontent.com/9804248/103356865-31ed2480-4af5-11eb-9801-2a48e6737d96.png)
-
+- 시연영상 보기<br>
+[![aifit](http://img.youtube.com/vi/6MZbvE2E_z8/0.jpg)](https://youtu.be/6MZbvE2E_z8)
